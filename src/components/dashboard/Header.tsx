@@ -83,7 +83,10 @@ export function Header({
     <header className={cn('flex h-16 items-center justify-between border-b bg-card px-6', className)}>
       {/* Left side */}
       <div className="flex items-center gap-4">
-        <h1 className="text-lg font-semibold text-foreground">{title}</h1>
+        <div className="flex items-center gap-2">
+          <h1 className="text-lg font-semibold text-foreground">{title}</h1>
+          <span className="text-xs text-muted-foreground">for Coca-Cola India</span>
+        </div>
         <span className="flex items-center gap-1.5 rounded-full bg-success/10 px-2.5 py-1 text-xs font-medium text-success">
           <span className="h-1.5 w-1.5 rounded-full bg-success animate-pulse" />
           Live

@@ -153,6 +153,15 @@ export function Sidebar({ className }: SidebarProps) {
           <HelpCircle className={cn('h-5 w-5 flex-shrink-0', collapsed && 'mx-auto')} />
           {!collapsed && <span>Help</span>}
         </button>
+        
+        {/* Futurelab Studios branding */}
+        {!collapsed && (
+          <div className="mt-4 px-3 py-2 text-center">
+            <p className="text-[10px] text-sidebar-foreground/50">
+              Built by <span className="font-medium text-sidebar-foreground/70">Futurelab Studios</span>
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

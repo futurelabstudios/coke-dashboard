@@ -9,7 +9,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-type Language = 'en' | 'hi';
+type Language = 'en' | 'hi' | 'hinglish';
 
 interface PageSummary {
   en: {
@@ -18,6 +18,11 @@ interface PageSummary {
     insights: string[];
   };
   hi: {
+    title: string;
+    summary: string;
+    insights: string[];
+  };
+  hinglish: {
     title: string;
     summary: string;
     insights: string[];
@@ -44,6 +49,15 @@ const pageSummaries: Record<string, PageSummary> = {
         '3 स्टोर्स में कूलर मिसिंग है, तुरंत ध्यान दें',
       ],
     },
+    hinglish: {
+      title: 'Dashboard Overview',
+      summary: 'Yeh dashboard aapko saari regions mein sales performance ki complete picture deta hai. KPI cards mein store count, availability aur cooler scores real-time mein dikhte hain.',
+      insights: [
+        'Store availability 87.3% hai - 85% target se upar',
+        'Cooler purity score 78.5% hai, improvement ki zaroorat hai',
+        '3 stores mein cooler missing hai, turant dhyan do',
+      ],
+    },
   },
   '/stores': {
     en: {
@@ -62,6 +76,15 @@ const pageSummaries: Record<string, PageSummary> = {
         'टॉप परफॉर्मिंग स्टोर्स ज्यादातर शहरी एरिया में हैं',
         'ग्रामीण स्टोर्स में एवरेज 12% कम अवेलेबिलिटी है',
         'डीटेल देखने के लिए किसी भी स्टोर पर क्लिक करें',
+      ],
+    },
+    hinglish: {
+      title: 'Store Performance Analysis',
+      summary: 'Yahaan aapke network ke saare stores unke performance numbers ke saath dikh rahe hain. Weak stores dhundne ke liye filters use karo.',
+      insights: [
+        'Top performing stores mostly urban areas mein hain',
+        'Rural stores mein average 12% kam availability hai',
+        'Details ke liye kisi bhi store pe click karo',
       ],
     },
   },
@@ -84,6 +107,15 @@ const pageSummaries: Record<string, PageSummary> = {
         'रीजनल कम्पेरिज़न से प्लानिंग बेहतर होती है',
       ],
     },
+    hinglish: {
+      title: 'Regional Performance Summary',
+      summary: 'Alag-alag regions ka performance yahaan compare karo. Isse trends samajhne mein help milti hai.',
+      insights: [
+        'North region 92% target achievement ke saath lead kar raha hai',
+        'West region pe dhyan do - target se 15% peeche',
+        'Regional comparison se planning better hoti hai',
+      ],
+    },
   },
   '/coolers': {
     en: {
@@ -102,6 +134,15 @@ const pageSummaries: Record<string, PageSummary> = {
         'एवरेज प्योरिटी 78.5% है जो 85% बेंचमार्क से कम है',
         '12 स्टोर्स में प्योरिटी लेवल क्रिटिकल है',
         'रेगुलर ऑडिट से स्कोर 15-20% बढ़ सकता है',
+      ],
+    },
+    hinglish: {
+      title: 'Cooler Purity Analysis',
+      summary: 'Apne network mein cooler compliance monitor karo. Impure coolers brand visibility ko affect karte hain.',
+      insights: [
+        'Average purity 78.5% hai jo 85% benchmark se kam hai',
+        '12 stores mein purity level critical hai (50% se neeche)',
+        'Regular audits se purity score 15-20% badh sakta hai',
       ],
     },
   },
@@ -124,6 +165,15 @@ const pageSummaries: Record<string, PageSummary> = {
         '3 लोकेशन के लिए रिक्वेस्ट अप्रूवल में है',
       ],
     },
+    hinglish: {
+      title: 'Missing Cooler Tracking',
+      summary: 'Bina cooler wale stores yahaan dekho. Missing cooler ka matlab hai brand visibility aur sales ka loss.',
+      insights: [
+        'Abhi 8 stores mein cooler nahi laga hai',
+        'Missing coolers se estimated loss: ₹45,000/month',
+        '3 locations ke liye installation request approval mein hai',
+      ],
+    },
   },
   '/metrics': {
     en: {
@@ -144,6 +194,15 @@ const pageSummaries: Record<string, PageSummary> = {
         'पीक परफॉर्मेंस टाइम 2PM-6PM है',
       ],
     },
+    hinglish: {
+      title: 'Performance Metrics Deep Dive',
+      summary: 'Saare KPIs ki detailed analytics. Target ke against progress track karne ke liye yeh use karo.',
+      insights: [
+        'Week-over-week growth 3.2% positive hai',
+        'Training ke baad conversion rate mein 8% improvement hua',
+        'Peak performance time 2PM-6PM hai',
+      ],
+    },
   },
   '/availability': {
     en: {
@@ -162,6 +221,15 @@ const pageSummaries: Record<string, PageSummary> = {
         'ओवरऑल अवेलेबिलिटी 87.3% है - टारगेट 90% है',
         'Coca-Cola 500ml में सबसे कम अवेलेबिलिटी 72% है',
         'वीकेंड रीस्टॉकिंग से अवेलेबिलिटी 5-8% बढ़ती है',
+      ],
+    },
+    hinglish: {
+      title: 'Product Availability Dashboard',
+      summary: 'Saare SKUs aur stores mein product availability track karo. Zyada availability ka matlab hai khush customers.',
+      insights: [
+        'Overall availability 87.3% hai - target 90% hai',
+        'Coca-Cola 500ml mein sabse kam availability 72% hai',
+        'Weekend pe restocking se availability 5-8% badhti hai',
       ],
     },
   },
@@ -205,11 +273,12 @@ export function AISummary({ currentPath, className }: AISummaryProps) {
           
           {/* Language Dropdown */}
           <Select value={language} onValueChange={(value: Language) => setLanguage(value)}>
-            <SelectTrigger className="w-[110px] h-9 text-xs bg-white border-border/50 shadow-sm">
+            <SelectTrigger className="w-[120px] h-9 text-xs bg-white border-border/50 shadow-sm">
               <SelectValue />
             </SelectTrigger>
             <SelectContent className="bg-white border shadow-lg z-50">
               <SelectItem value="en" className="text-sm">🇬🇧 English</SelectItem>
+              <SelectItem value="hinglish" className="text-sm">🇮🇳 Hinglish</SelectItem>
               <SelectItem value="hi" className="text-sm">🇮🇳 हिंदी</SelectItem>
             </SelectContent>
           </Select>

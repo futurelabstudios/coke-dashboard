@@ -14,19 +14,19 @@ interface KPICardProps {
 }
 
 const variantStyles = {
-  default: 'bg-card border border-border shadow-md hover:shadow-lg',
-  primary: 'bg-card border-2 border-primary/30 shadow-md hover:shadow-lg ring-1 ring-primary/10',
-  success: 'bg-card border-2 border-success/30 shadow-md hover:shadow-lg ring-1 ring-success/10',
-  warning: 'bg-card border-2 border-warning/30 shadow-md hover:shadow-lg ring-1 ring-warning/10',
-  danger: 'bg-card border-2 border-danger/30 shadow-md hover:shadow-lg ring-1 ring-danger/10',
+  default: 'bg-white border border-border/60 shadow-sm hover:shadow-md',
+  primary: 'bg-white border border-primary/20 shadow-sm hover:shadow-md',
+  success: 'bg-white border border-success/20 shadow-sm hover:shadow-md',
+  warning: 'bg-white border border-warning/20 shadow-sm hover:shadow-md',
+  danger: 'bg-white border border-danger/20 shadow-sm hover:shadow-md',
 };
 
 const iconStyles = {
-  default: 'bg-muted text-muted-foreground',
-  primary: 'bg-primary/15 text-primary',
-  success: 'bg-success/15 text-success',
-  warning: 'bg-warning/15 text-warning',
-  danger: 'bg-danger/15 text-danger',
+  default: 'bg-primary/5 text-primary/70',
+  primary: 'bg-primary text-white',
+  success: 'bg-success text-white',
+  warning: 'bg-warning text-white',
+  danger: 'bg-danger text-white',
 };
 
 const valueStyles = {

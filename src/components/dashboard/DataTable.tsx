@@ -57,18 +57,18 @@ export function DataTable({ data, onRowClick, className }: DataTableProps) {
   };
 
   return (
-    <div className={cn('rounded-xl border bg-card', className)}>
-      <div className="flex items-center justify-between border-b px-5 py-4">
+    <div className={cn('glass-card rounded-2xl overflow-hidden', className)}>
+      <div className="flex items-center justify-between border-b border-border/30 px-5 py-4 bg-gradient-to-r from-muted/30 to-transparent">
         <div>
-          <h3 className="font-semibold text-foreground">Store Performance</h3>
-          <p className="text-sm text-muted-foreground">{data.length} stores</p>
+          <h3 className="font-display font-bold text-foreground">Store Performance</h3>
+          <p className="text-xs text-muted-foreground">{data.length} stores</p>
         </div>
       </div>
 
       <div className="overflow-x-auto">
         <Table>
           <TableHeader>
-            <TableRow className="hover:bg-transparent">
+            <TableRow className="hover:bg-transparent border-border/30">
               <TableHead className="w-10"></TableHead>
               <TableHead 
                 className="cursor-pointer select-none"

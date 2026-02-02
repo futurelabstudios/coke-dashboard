@@ -23,87 +23,87 @@ const pageSummaries: Record<string, PageSummary> = {
   '/': {
     en: {
       title: 'Dashboard Overview',
-      summary: 'This dashboard provides a comprehensive view of your sales performance across all regions. The KPI cards show real-time metrics including store count, product availability, and cooler compliance scores.',
+      summary: 'This dashboard gives you a complete picture of your sales performance across all regions. The KPI cards show real-time numbers including store count, product availability, and cooler compliance scores.',
       insights: [
-        'Store availability is at 87.3% - above the 85% target threshold',
-        'Cooler purity score of 78.5% indicates room for improvement',
-        '3 stores require immediate attention for missing coolers',
+        'Store availability is at 87.3% - above the 85% target',
+        'Cooler purity score of 78.5% means there is room for improvement',
+        '3 stores need immediate attention for missing coolers',
       ],
     },
     hi: {
-      title: 'डैशबोर्ड अवलोकन',
-      summary: 'यह डैशबोर्ड सभी क्षेत्रों में आपके बिक्री प्रदर्शन का व्यापक दृश्य प्रदान करता है। KPI कार्ड स्टोर गणना, उत्पाद उपलब्धता और कूलर अनुपालन स्कोर सहित रीयल-टाइम मेट्रिक्स दिखाते हैं।',
+      title: 'डैशबोर्ड ओवरव्यू',
+      summary: 'यह डैशबोर्ड आपको सभी रीजन्स में सेल्स परफॉर्मेंस की पूरी तस्वीर दिखाता है। KPI कार्ड्स में स्टोर काउंट, प्रोडक्ट अवेलेबिलिटी और कूलर कंप्लायंस स्कोर रियल-टाइम में दिखते हैं।',
       insights: [
-        'स्टोर उपलब्धता 87.3% पर है - 85% लक्ष्य सीमा से ऊपर',
-        '78.5% का कूलर शुद्धता स्कोर सुधार की गुंजाइश दर्शाता है',
-        '3 स्टोर में गायब कूलर के लिए तत्काल ध्यान देने की आवश्यकता है',
+        'स्टोर अवेलेबिलिटी 87.3% है - 85% टारगेट से ऊपर',
+        'कूलर प्योरिटी स्कोर 78.5% है, इसमें सुधार की जरूरत है',
+        '3 स्टोर्स में कूलर मिसिंग है, तुरंत ध्यान दें',
       ],
     },
   },
   '/stores': {
     en: {
       title: 'Store Performance Analysis',
-      summary: 'This view displays all stores in your network with their performance metrics. Use filters to identify underperforming stores or focus on specific regions.',
+      summary: 'This view shows all stores in your network with their performance numbers. Use filters to find underperforming stores or focus on specific regions.',
       insights: [
-        'Top performing stores are concentrated in urban areas',
+        'Top performing stores are mostly in urban areas',
         'Rural stores show 12% lower availability on average',
-        'Click on any store row for detailed performance breakdown',
+        'Click on any store row for detailed breakdown',
       ],
     },
     hi: {
-      title: 'स्टोर प्रदर्शन विश्लेषण',
-      summary: 'यह दृश्य आपके नेटवर्क के सभी स्टोर को उनके प्रदर्शन मेट्रिक्स के साथ प्रदर्शित करता है। खराब प्रदर्शन करने वाले स्टोर की पहचान करने या विशिष्ट क्षेत्रों पर ध्यान केंद्रित करने के लिए फ़िल्टर का उपयोग करें।',
+      title: 'स्टोर परफॉर्मेंस एनालिसिस',
+      summary: 'यहाँ आपके नेटवर्क के सभी स्टोर्स उनके परफॉर्मेंस नंबर्स के साथ दिख रहे हैं। कमजोर स्टोर्स ढूंढने के लिए फ़िल्टर यूज़ करें।',
       insights: [
-        'शीर्ष प्रदर्शन करने वाले स्टोर शहरी क्षेत्रों में केंद्रित हैं',
-        'ग्रामीण स्टोर औसतन 12% कम उपलब्धता दिखाते हैं',
-        'विस्तृत प्रदर्शन विवरण के लिए किसी भी स्टोर पंक्ति पर क्लिक करें',
+        'टॉप परफॉर्मिंग स्टोर्स ज्यादातर शहरी एरिया में हैं',
+        'ग्रामीण स्टोर्स में एवरेज 12% कम अवेलेबिलिटी है',
+        'डीटेल देखने के लिए किसी भी स्टोर पर क्लिक करें',
       ],
     },
   },
   '/regions': {
     en: {
       title: 'Regional Performance Summary',
-      summary: 'Compare performance across different geographic regions. This helps identify regional trends and allocate resources effectively.',
+      summary: 'Compare performance across different regions. This helps identify regional trends and allocate resources effectively.',
       insights: [
         'North region leads with 92% target achievement',
-        'West region requires attention - 15% below quarterly target',
+        'West region needs attention - 15% below quarterly target',
         'Regional comparison helps optimize territory planning',
       ],
     },
     hi: {
-      title: 'क्षेत्रीय प्रदर्शन सारांश',
-      summary: 'विभिन्न भौगोलिक क्षेत्रों में प्रदर्शन की तुलना करें। यह क्षेत्रीय रुझानों की पहचान करने और संसाधनों को प्रभावी ढंग से आवंटित करने में मदद करता है।',
+      title: 'रीजनल परफॉर्मेंस समरी',
+      summary: 'अलग-अलग रीजन्स का परफॉर्मेंस यहाँ कंपेयर करें। इससे रीजनल ट्रेंड्स समझने और रिसोर्सेज सही जगह लगाने में मदद मिलती है।',
       insights: [
-        'उत्तर क्षेत्र 92% लक्ष्य उपलब्धि के साथ अग्रणी है',
-        'पश्चिम क्षेत्र पर ध्यान देने की आवश्यकता है - तिमाही लक्ष्य से 15% नीचे',
-        'क्षेत्रीय तुलना क्षेत्र नियोजन को अनुकूलित करने में मदद करती है',
+        'नॉर्थ रीजन 92% टारगेट अचीवमेंट के साथ आगे है',
+        'वेस्ट रीजन पर ध्यान दें - क्वार्टरली टारगेट से 15% पीछे',
+        'रीजनल कम्पेरिज़न से टेरिटरी प्लानिंग बेहतर होती है',
       ],
     },
   },
   '/coolers': {
     en: {
       title: 'Cooler Purity Analysis',
-      summary: 'Monitor cooler compliance across your network. Impure coolers contain competitor products and affect brand visibility. Focus on stores with purity below 50% for immediate action.',
+      summary: 'Monitor cooler compliance across your network. Impure coolers have competitor products and affect brand visibility. Focus on stores with purity below 50% first.',
       insights: [
         'Average purity of 78.5% is below the 85% benchmark',
-        '12 stores have critical purity levels (<50%)',
-        'Regular audits improve purity scores by 15-20%',
+        '12 stores have critical purity levels (below 50%)',
+        'Regular audits can improve purity scores by 15-20%',
       ],
     },
     hi: {
-      title: 'कूलर शुद्धता विश्लेषण',
-      summary: 'अपने नेटवर्क में कूलर अनुपालन की निगरानी करें। अशुद्ध कूलर में प्रतिस्पर्धी उत्पाद होते हैं और ब्रांड दृश्यता को प्रभावित करते हैं। तत्काल कार्रवाई के लिए 50% से कम शुद्धता वाले स्टोर पर ध्यान दें।',
+      title: 'कूलर प्योरिटी एनालिसिस',
+      summary: 'अपने नेटवर्क में कूलर कंप्लायंस मॉनिटर करें। इम्प्योर कूलर में कॉम्पिटिटर प्रोडक्ट्स होते हैं जो ब्रांड विज़िबिलिटी को कम करते हैं। पहले 50% से कम प्योरिटी वाले स्टोर्स पर फोकस करें।',
       insights: [
-        '78.5% की औसत शुद्धता 85% बेंचमार्क से नीचे है',
-        '12 स्टोर में गंभीर शुद्धता स्तर (<50%) हैं',
-        'नियमित ऑडिट शुद्धता स्कोर में 15-20% सुधार करते हैं',
+        'एवरेज प्योरिटी 78.5% है जो 85% बेंचमार्क से कम है',
+        '12 स्टोर्स में प्योरिटी लेवल क्रिटिकल है (50% से कम)',
+        'रेगुलर ऑडिट से प्योरिटी स्कोर 15-20% बढ़ सकता है',
       ],
     },
   },
   '/missing-coolers': {
     en: {
       title: 'Missing Cooler Tracking',
-      summary: 'Identify stores without cooler installations. Missing coolers represent lost brand visibility and sales opportunities. Prioritize high-traffic stores for new installations.',
+      summary: 'Find stores without cooler installations. Missing coolers mean lost brand visibility and sales opportunities. Prioritize high-traffic stores for new installations.',
       insights: [
         '8 stores currently without cooler installations',
         'Estimated revenue loss: ₹45,000/month from missing coolers',
@@ -111,39 +111,39 @@ const pageSummaries: Record<string, PageSummary> = {
       ],
     },
     hi: {
-      title: 'गायब कूलर ट्रैकिंग',
-      summary: 'बिना कूलर इंस्टॉलेशन वाले स्टोर की पहचान करें। गायब कूलर ब्रांड दृश्यता और बिक्री के अवसरों का नुकसान दर्शाते हैं। नई स्थापनाओं के लिए उच्च-ट्रैफ़िक स्टोर को प्राथमिकता दें।',
+      title: 'मिसिंग कूलर ट्रैकिंग',
+      summary: 'बिना कूलर वाले स्टोर्स यहाँ देखें। मिसिंग कूलर का मतलब है ब्रांड विज़िबिलिटी और सेल्स का नुकसान। हाई-ट्रैफिक स्टोर्स में पहले इंस्टॉलेशन कराएं।',
       insights: [
-        'वर्तमान में 8 स्टोर बिना कूलर इंस्टॉलेशन के हैं',
-        'अनुमानित राजस्व हानि: गायब कूलर से ₹45,000/माह',
-        '3 स्थानों के लिए इंस्टॉलेशन अनुरोध अनुमोदन लंबित है',
+        'अभी 8 स्टोर्स में कूलर नहीं लगा है',
+        'मिसिंग कूलर से अनुमानित नुकसान: ₹45,000/महीना',
+        '3 लोकेशन के लिए इंस्टॉलेशन रिक्वेस्ट अप्रूवल में है',
       ],
     },
   },
   '/metrics': {
     en: {
       title: 'Performance Metrics Deep Dive',
-      summary: 'Detailed analytics on all key performance indicators. Use these metrics to track progress against targets and identify improvement opportunities.',
+      summary: 'Detailed analytics on all key performance indicators. Use these metrics to track progress against targets and find improvement opportunities.',
       insights: [
-        'Week-over-week growth is trending positive at 3.2%',
+        'Week-over-week growth is positive at 3.2%',
         'Conversion rate improved by 8% after recent training',
         'Peak performance hours are 2PM-6PM across regions',
       ],
     },
     hi: {
-      title: 'प्रदर्शन मेट्रिक्स गहन विश्लेषण',
-      summary: 'सभी प्रमुख प्रदर्शन संकेतकों पर विस्तृत विश्लेषण। लक्ष्यों के विरुद्ध प्रगति को ट्रैक करने और सुधार के अवसरों की पहचान करने के लिए इन मेट्रिक्स का उपयोग करें।',
+      title: 'परफॉर्मेंस मेट्रिक्स डीप डाइव',
+      summary: 'सभी key परफॉर्मेंस इंडिकेटर्स की डीटेल्ड एनालिटिक्स। टारगेट के against प्रोग्रेस ट्रैक करने और इम्प्रूवमेंट के मौके ढूंढने के लिए इन मेट्रिक्स का यूज़ करें।',
       insights: [
-        'सप्ताह-दर-सप्ताह वृद्धि 3.2% पर सकारात्मक है',
-        'हाल के प्रशिक्षण के बाद रूपांतरण दर में 8% सुधार हुआ',
-        'सभी क्षेत्रों में पीक प्रदर्शन घंटे दोपहर 2 बजे से शाम 6 बजे हैं',
+        'वीक-ओवर-वीक ग्रोथ 3.2% पॉज़िटिव है',
+        'रीसेंट ट्रेनिंग के बाद कन्वर्ज़न रेट में 8% सुधार हुआ',
+        'सभी रीजन्स में पीक परफॉर्मेंस टाइम 2PM-6PM है',
       ],
     },
   },
   '/availability': {
     en: {
       title: 'Product Availability Dashboard',
-      summary: 'Track product availability across all SKUs and stores. Maintaining high availability ensures customer satisfaction and maximizes sales potential.',
+      summary: 'Track product availability across all SKUs and stores. High availability means happy customers and maximum sales.',
       insights: [
         'Overall availability at 87.3% - target is 90%',
         'Coca-Cola 500ml shows lowest availability at 72%',
@@ -151,12 +151,12 @@ const pageSummaries: Record<string, PageSummary> = {
       ],
     },
     hi: {
-      title: 'उत्पाद उपलब्धता डैशबोर्ड',
-      summary: 'सभी SKU और स्टोर में उत्पाद उपलब्धता को ट्रैक करें। उच्च उपलब्धता बनाए रखना ग्राहक संतुष्टि सुनिश्चित करता है और बिक्री क्षमता को अधिकतम करता है।',
+      title: 'प्रोडक्ट अवेलेबिलिटी डैशबोर्ड',
+      summary: 'सभी SKUs और स्टोर्स में प्रोडक्ट अवेलेबिलिटी ट्रैक करें। ज्यादा अवेलेबिलिटी का मतलब है खुश कस्टमर और ज्यादा सेल्स।',
       insights: [
-        'कुल उपलब्धता 87.3% पर - लक्ष्य 90% है',
-        'कोका-कोला 500ml 72% पर सबसे कम उपलब्धता दिखाता है',
-        'सप्ताहांत रीस्टॉकिंग उपलब्धता में 5-8% सुधार करती है',
+        'ओवरऑल अवेलेबिलिटी 87.3% है - टारगेट 90% है',
+        'Coca-Cola 500ml में सबसे कम अवेलेबिलिटी 72% है',
+        'वीकेंड पर रीस्टॉकिंग से अवेलेबिलिटी 5-8% बढ़ती है',
       ],
     },
   },

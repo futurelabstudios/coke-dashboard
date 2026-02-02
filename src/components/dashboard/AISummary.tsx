@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Sparkles, Languages } from 'lucide-react';
+import { Info, Languages } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-type Language = 'en' | 'hi';
+type Language = 'en' | 'hi' | 'hinglish';
 
 interface PageSummary {
   en: {
@@ -13,6 +13,11 @@ interface PageSummary {
     insights: string[];
   };
   hi: {
+    title: string;
+    summary: string;
+    insights: string[];
+  };
+  hinglish: {
     title: string;
     summary: string;
     insights: string[];
@@ -39,6 +44,15 @@ const pageSummaries: Record<string, PageSummary> = {
         '3 स्टोर्स में कूलर मिसिंग है, तुरंत ध्यान दें',
       ],
     },
+    hinglish: {
+      title: 'Dashboard Overview',
+      summary: 'Yeh dashboard aapko saari regions mein sales performance ki complete picture deta hai. KPI cards mein store count, product availability aur cooler compliance scores real-time mein dikhte hain.',
+      insights: [
+        'Store availability 87.3% hai - 85% target se upar',
+        'Cooler purity score 78.5% hai, improvement ki zaroorat hai',
+        '3 stores mein cooler missing hai, turant attention do',
+      ],
+    },
   },
   '/stores': {
     en: {
@@ -57,6 +71,15 @@ const pageSummaries: Record<string, PageSummary> = {
         'टॉप परफॉर्मिंग स्टोर्स ज्यादातर शहरी एरिया में हैं',
         'ग्रामीण स्टोर्स में एवरेज 12% कम अवेलेबिलिटी है',
         'डीटेल देखने के लिए किसी भी स्टोर पर क्लिक करें',
+      ],
+    },
+    hinglish: {
+      title: 'Store Performance Analysis',
+      summary: 'Yahaan aapke network ke saare stores unke performance numbers ke saath dikh rahe hain. Weak stores dhundne ke liye filters use karo.',
+      insights: [
+        'Top performing stores mostly urban areas mein hain',
+        'Rural stores mein average 12% kam availability hai',
+        'Details ke liye kisi bhi store pe click karo',
       ],
     },
   },
@@ -79,6 +102,15 @@ const pageSummaries: Record<string, PageSummary> = {
         'रीजनल कम्पेरिज़न से टेरिटरी प्लानिंग बेहतर होती है',
       ],
     },
+    hinglish: {
+      title: 'Regional Performance Summary',
+      summary: 'Alag-alag regions ka performance yahaan compare karo. Isse regional trends samajhne aur resources sahi jagah lagane mein help milti hai.',
+      insights: [
+        'North region 92% target achievement ke saath lead kar raha hai',
+        'West region pe dhyan do - quarterly target se 15% peeche',
+        'Regional comparison se territory planning better hoti hai',
+      ],
+    },
   },
   '/coolers': {
     en: {
@@ -97,6 +129,15 @@ const pageSummaries: Record<string, PageSummary> = {
         'एवरेज प्योरिटी 78.5% है जो 85% बेंचमार्क से कम है',
         '12 स्टोर्स में प्योरिटी लेवल क्रिटिकल है (50% से कम)',
         'रेगुलर ऑडिट से प्योरिटी स्कोर 15-20% बढ़ सकता है',
+      ],
+    },
+    hinglish: {
+      title: 'Cooler Purity Analysis',
+      summary: 'Apne network mein cooler compliance monitor karo. Impure coolers mein competitor products hote hain jo brand visibility ko affect karte hain. Pehle 50% se kam purity wale stores pe focus karo.',
+      insights: [
+        'Average purity 78.5% hai jo 85% benchmark se kam hai',
+        '12 stores mein purity level critical hai (50% se neeche)',
+        'Regular audits se purity score 15-20% badh sakta hai',
       ],
     },
   },
@@ -119,6 +160,15 @@ const pageSummaries: Record<string, PageSummary> = {
         '3 लोकेशन के लिए इंस्टॉलेशन रिक्वेस्ट अप्रूवल में है',
       ],
     },
+    hinglish: {
+      title: 'Missing Cooler Tracking',
+      summary: 'Bina cooler wale stores yahaan dekho. Missing cooler ka matlab hai brand visibility aur sales ka loss. High-traffic stores mein pehle installation karao.',
+      insights: [
+        'Abhi 8 stores mein cooler nahi laga hai',
+        'Missing coolers se estimated loss: ₹45,000/month',
+        '3 locations ke liye installation request approval mein hai',
+      ],
+    },
   },
   '/metrics': {
     en: {
@@ -137,6 +187,15 @@ const pageSummaries: Record<string, PageSummary> = {
         'वीक-ओवर-वीक ग्रोथ 3.2% पॉज़िटिव है',
         'रीसेंट ट्रेनिंग के बाद कन्वर्ज़न रेट में 8% सुधार हुआ',
         'सभी रीजन्स में पीक परफॉर्मेंस टाइम 2PM-6PM है',
+      ],
+    },
+    hinglish: {
+      title: 'Performance Metrics Deep Dive',
+      summary: 'Saare key performance indicators ki detailed analytics. Target ke against progress track karne aur improvement ke chances dhundne ke liye yeh metrics use karo.',
+      insights: [
+        'Week-over-week growth 3.2% positive hai',
+        'Recent training ke baad conversion rate mein 8% improvement hua',
+        'Saari regions mein peak performance time 2PM-6PM hai',
       ],
     },
   },
@@ -159,6 +218,15 @@ const pageSummaries: Record<string, PageSummary> = {
         'वीकेंड पर रीस्टॉकिंग से अवेलेबिलिटी 5-8% बढ़ती है',
       ],
     },
+    hinglish: {
+      title: 'Product Availability Dashboard',
+      summary: 'Saare SKUs aur stores mein product availability track karo. Zyada availability ka matlab hai khush customers aur maximum sales.',
+      insights: [
+        'Overall availability 87.3% hai - target 90% hai',
+        'Coca-Cola 500ml mein sabse kam availability 72% hai',
+        'Weekend pe restocking se availability 5-8% badhti hai',
+      ],
+    },
   },
 };
 
@@ -179,10 +247,10 @@ export function AISummary({ currentPath, className }: AISummaryProps) {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10">
-              <Sparkles className="h-4 w-4 text-primary" />
+              <Info className="h-4 w-4 text-primary" />
             </div>
             <CardTitle className="text-base font-semibold">
-              {language === 'en' ? 'AI Insights' : 'AI अंतर्दृष्टि'}
+              Information Summary
             </CardTitle>
           </div>
           <div className="flex items-center gap-1 rounded-lg bg-muted p-1">
@@ -194,6 +262,14 @@ export function AISummary({ currentPath, className }: AISummaryProps) {
             >
               <Languages className="mr-1 h-3 w-3" />
               EN
+            </Button>
+            <Button
+              variant={language === 'hinglish' ? 'secondary' : 'ghost'}
+              size="sm"
+              className="h-7 px-2 text-xs"
+              onClick={() => setLanguage('hinglish')}
+            >
+              Hinglish
             </Button>
             <Button
               variant={language === 'hi' ? 'secondary' : 'ghost'}
@@ -215,7 +291,7 @@ export function AISummary({ currentPath, className }: AISummaryProps) {
         </div>
         <div className="space-y-2">
           <h5 className="text-sm font-medium text-foreground">
-            {language === 'en' ? 'Key Insights:' : 'मुख्य अंतर्दृष्टि:'}
+            {language === 'en' ? 'Key Insights:' : language === 'hinglish' ? 'Key Insights:' : 'मुख्य जानकारी:'}
           </h5>
           <ul className="space-y-1.5">
             {content.insights.map((insight, index) => (

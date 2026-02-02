@@ -13,28 +13,37 @@ interface KPICardProps {
   onClick?: () => void;
 }
 
-const variantStyles = {
-  default: 'bg-white border border-border/60 shadow-sm hover:shadow-md',
-  primary: 'bg-white border border-primary/20 shadow-sm hover:shadow-md',
-  success: 'bg-white border border-success/20 shadow-sm hover:shadow-md',
-  warning: 'bg-white border border-warning/20 shadow-sm hover:shadow-md',
-  danger: 'bg-white border border-danger/20 shadow-sm hover:shadow-md',
-};
-
-const iconStyles = {
-  default: 'bg-primary/5 text-primary/70',
-  primary: 'bg-primary text-white',
-  success: 'bg-success text-white',
-  warning: 'bg-warning text-white',
-  danger: 'bg-danger text-white',
-};
-
-const valueStyles = {
-  default: 'text-foreground',
-  primary: 'gradient-text',
-  success: 'text-success',
-  warning: 'text-warning',
-  danger: 'text-danger',
+const variantConfig = {
+  default: {
+    card: 'bg-white/70 backdrop-blur-xl border-white/50',
+    icon: 'bg-muted text-muted-foreground',
+    value: 'text-foreground',
+    accent: 'from-muted/20 to-transparent',
+  },
+  primary: {
+    card: 'bg-white/75 backdrop-blur-xl border-white/60',
+    icon: 'bg-primary text-white shadow-sm',
+    value: 'text-primary',
+    accent: 'from-primary/5 to-transparent',
+  },
+  success: {
+    card: 'bg-white/75 backdrop-blur-xl border-success/20',
+    icon: 'bg-success text-white shadow-sm',
+    value: 'text-success',
+    accent: 'from-success/5 to-transparent',
+  },
+  warning: {
+    card: 'bg-white/75 backdrop-blur-xl border-warning/20',
+    icon: 'bg-warning text-white shadow-sm',
+    value: 'text-warning',
+    accent: 'from-warning/5 to-transparent',
+  },
+  danger: {
+    card: 'bg-white/75 backdrop-blur-xl border-danger/20',
+    icon: 'bg-danger text-white shadow-sm',
+    value: 'text-danger',
+    accent: 'from-danger/5 to-transparent',
+  },
 };
 
 export function KPICard({
@@ -49,64 +58,62 @@ export function KPICard({
   onClick,
 }: KPICardProps) {
   const TrendIcon = trend === 'up' ? TrendingUp : trend === 'down' ? TrendingDown : Minus;
-  const trendColor = trend === 'up' ? 'text-success' : trend === 'down' ? 'text-danger' : 'text-muted-foreground';
+  const trendColor = trend === 'up' ? 'text-success bg-success/10' : trend === 'down' ? 'text-danger bg-danger/10' : 'text-muted-foreground bg-muted';
+  const config = variantConfig[variant];
 
   return (
     <div
       className={cn(
-        'relative overflow-hidden rounded-2xl p-3 sm:p-5 transition-all duration-300',
-        variantStyles[variant],
-        onClick && 'cursor-pointer hover:shadow-card-hover hover:-translate-y-1 active:scale-[0.98]',
+        'relative overflow-hidden rounded-2xl p-4 transition-all duration-300',
+        'border shadow-[0_4px_24px_-4px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,0.9)]',
+        'hover:shadow-[0_8px_32px_-4px_rgba(0,0,0,0.1),inset_0_1px_0_rgba(255,255,255,1)]',
+        config.card,
+        onClick && 'cursor-pointer hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.99]',
         className
       )}
       onClick={onClick}
     >
-      {/* Decorative gradient orb - subtle for light theme */}
-      {variant === 'primary' && (
-        <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-primary/10 blur-2xl" />
-      )}
-      {variant === 'success' && (
-        <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-success/10 blur-2xl" />
-      )}
+      {/* Subtle gradient overlay for depth */}
+      <div className={cn('absolute inset-0 bg-gradient-to-br pointer-events-none', config.accent)} />
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white to-transparent" />
 
       <div className="relative z-10">
-        {/* Header */}
-        <div className="flex items-start justify-between">
+        {/* Header with icon */}
+        <div className="flex items-start justify-between gap-2">
           <div className="flex-1 min-w-0">
-            <p className="text-[10px] sm:text-xs font-medium uppercase tracking-wider text-muted-foreground truncate">
+            <p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground truncate">
               {title}
             </p>
             <p className={cn(
-              'mt-1 sm:mt-2 text-xl sm:text-3xl font-bold tracking-tight font-display',
-              valueStyles[variant]
+              'mt-1.5 text-2xl font-bold tracking-tight font-display',
+              config.value
             )}>
               {value}
             </p>
           </div>
           {Icon && (
             <div className={cn(
-              'flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-xl shrink-0',
-              iconStyles[variant]
+              'flex h-10 w-10 items-center justify-center rounded-xl shrink-0',
+              config.icon
             )}>
-              <Icon className="h-4 w-4 sm:h-5 sm:w-5" />
+              <Icon className="h-5 w-5" />
             </div>
           )}
         </div>
 
-        {/* Footer */}
-        <div className="mt-2 sm:mt-4 flex items-center gap-1.5 sm:gap-2 flex-wrap">
+        {/* Footer with trend and subtitle */}
+        <div className="mt-3 flex items-center gap-2 flex-wrap">
           {trend && (
             <div className={cn(
-              'flex items-center gap-0.5 sm:gap-1 text-xs sm:text-sm font-medium px-2 py-0.5 rounded-full',
-              trend === 'up' ? 'bg-success/10' : trend === 'down' ? 'bg-danger/10' : 'bg-muted/50',
+              'flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-full',
               trendColor
             )}>
-              <TrendIcon className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+              <TrendIcon className="h-3 w-3" />
               {trendValue && <span>{trendValue}</span>}
             </div>
           )}
           {subtitle && (
-            <p className="text-[10px] sm:text-xs text-muted-foreground truncate">{subtitle}</p>
+            <p className="text-[11px] text-muted-foreground truncate">{subtitle}</p>
           )}
         </div>
       </div>
@@ -121,7 +128,7 @@ interface KPICardGroupProps {
 
 export function KPICardGroup({ children, className }: KPICardGroupProps) {
   return (
-    <div className={cn('grid gap-4 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6', className)}>
+    <div className={cn('grid gap-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6', className)}>
       {children}
     </div>
   );

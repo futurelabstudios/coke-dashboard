@@ -198,7 +198,8 @@ export default function Overview() {
   };
 
   return (
-    <div className="space-y-4 sm:space-y-6">
+    <div className="space-y-4">
+      {/* Filter Bar */}
       <FilterBar
         filters={filterConfigs}
         values={filters}
@@ -209,7 +210,8 @@ export default function Overview() {
         onSearchChange={setSearchQuery}
       />
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-4">
+      {/* Hero KPI Section - Mobile optimized grid */}
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
         <KPICard
           title="Store Count"
           value={formatNumber(kpis.storeCount)}
@@ -270,12 +272,13 @@ export default function Overview() {
         />
       </div>
 
-      <div className="grid gap-4 sm:gap-6 lg:grid-cols-2">
+      {/* Charts Section */}
+      <div className="grid gap-3 lg:grid-cols-2">
         <TrendChart data={monthlyTrendData} />
         <RegionalPerformanceChart data={regionSummaryData} />
       </div>
 
-      <div className="grid gap-4 sm:gap-6 lg:grid-cols-3">
+      <div className="grid gap-3 lg:grid-cols-3">
         <BottlerComparisonChart 
           data={bottlerPerformanceData.slice(0, 6)} 
           className="lg:col-span-2"
@@ -297,34 +300,35 @@ export default function Overview() {
         onRowClick={handleStoreClick}
       />
 
+      {/* Alert Section */}
       {filteredData.some((s) => s.coolerPurityPercent < 50) && (
-        <div className="glass-card glow-border-danger rounded-2xl p-5 sm:p-6 animate-fade-in">
-          <div className="flex items-start gap-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-danger/20 shrink-0">
-              <AlertTriangle className="h-6 w-6 text-danger" />
+        <div className="relative rounded-2xl overflow-hidden p-4 bg-white/75 backdrop-blur-xl border border-danger/20 shadow-[0_4px_24px_-4px_rgba(220,38,38,0.1)]">
+          <div className="flex items-start gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-danger text-white shrink-0">
+              <AlertTriangle className="h-5 w-5" />
             </div>
             <div className="flex-1 min-w-0">
-              <h3 className="font-display font-bold text-danger text-base sm:text-lg">Action Required: Low Purity Stores</h3>
-              <p className="mt-1.5 text-sm text-muted-foreground">
+              <h3 className="font-display font-bold text-danger text-sm">Action Required: Low Purity Stores</h3>
+              <p className="mt-1 text-xs text-muted-foreground">
                 {filteredData.filter((s) => s.coolerPurityPercent < 50).length} stores have 
-                cooler purity below 50%. Immediate attention needed to improve brand visibility.
+                cooler purity below 50%.
               </p>
-              <ul className="mt-4 space-y-2">
+              <div className="mt-3 space-y-1.5">
                 {filteredData
                   .filter((s) => s.coolerPurityPercent < 50)
                   .slice(0, 3)
                   .map((store) => (
-                    <li 
+                    <div 
                       key={store.id} 
-                      className="flex items-center gap-2 text-sm text-danger cursor-pointer hover:bg-danger/10 px-3 py-2 rounded-lg transition-colors -mx-3"
+                      className="flex items-center gap-2 text-xs text-danger cursor-pointer hover:bg-danger/5 px-2 py-1.5 rounded-lg transition-colors -mx-2"
                       onClick={() => handleStoreClick(store)}
                     >
-                      <span className="h-2 w-2 rounded-full bg-danger animate-pulse" />
-                      <span className="font-medium">{store.outletName}</span>
-                      <span className="text-danger/70">({store.coolerPurityPercent.toFixed(1)}% purity)</span>
-                    </li>
+                      <span className="h-1.5 w-1.5 rounded-full bg-danger animate-pulse" />
+                      <span className="font-medium truncate">{store.outletName}</span>
+                      <span className="text-danger/70 shrink-0">({store.coolerPurityPercent.toFixed(0)}%)</span>
+                    </div>
                   ))}
-              </ul>
+              </div>
             </div>
           </div>
         </div>

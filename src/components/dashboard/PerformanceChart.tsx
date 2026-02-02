@@ -31,17 +31,25 @@ export function ChartContainer({
   action,
 }: ChartContainerProps) {
   return (
-    <div className={cn('glass-card rounded-2xl p-5 sm:p-6', className)}>
-      <div className="mb-5 flex items-start justify-between">
-        <div>
-          <h3 className="font-display font-bold text-foreground">{title}</h3>
-          {subtitle && (
-            <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">{subtitle}</p>
-          )}
+    <div className={cn(
+      'relative rounded-2xl overflow-hidden p-4',
+      'bg-white/70 backdrop-blur-xl border border-white/50',
+      'shadow-[0_4px_24px_-4px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,0.9)]',
+      className
+    )}>
+      <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent pointer-events-none" />
+      <div className="relative">
+        <div className="mb-4 flex items-start justify-between">
+          <div>
+            <h3 className="font-display font-bold text-sm text-foreground">{title}</h3>
+            {subtitle && (
+              <p className="text-xs text-muted-foreground mt-0.5">{subtitle}</p>
+            )}
+          </div>
+          {action}
         </div>
-        {action}
+        {children}
       </div>
-      {children}
     </div>
   );
 }
@@ -70,25 +78,26 @@ export function RegionalPerformanceChart({ data, className }: RegionalPerformanc
       subtitle="Store count and achievement by region"
       className={className}
     >
-      <div className="h-[300px]">
+      <div className="h-[260px]">
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={data} layout="vertical" margin={{ left: 10, right: 30 }}>
-            <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="hsl(var(--border))" />
-            <XAxis type="number" tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }} axisLine={false} tickLine={false} />
+          <BarChart data={data} layout="vertical" margin={{ left: 0, right: 20 }}>
+            <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="hsl(var(--border))" opacity={0.5} />
+            <XAxis type="number" tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 11 }} axisLine={false} tickLine={false} />
             <YAxis 
               type="category" 
               dataKey="region" 
-              tick={{ fill: 'hsl(var(--foreground))', fontSize: 12, fontWeight: 500 }} 
+              tick={{ fill: 'hsl(var(--foreground))', fontSize: 11, fontWeight: 500 }} 
               axisLine={false} 
               tickLine={false}
-              width={60}
+              width={50}
             />
             <Tooltip
               contentStyle={{
-                backgroundColor: 'hsl(var(--card))',
+                backgroundColor: 'rgba(255,255,255,0.95)',
+                backdropFilter: 'blur(8px)',
                 border: '1px solid hsl(var(--border))',
-                borderRadius: '8px',
-                boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                borderRadius: '12px',
+                boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
               }}
               labelStyle={{ color: 'hsl(var(--foreground))', fontWeight: 600 }}
               itemStyle={{ color: 'hsl(var(--muted-foreground))' }}
@@ -97,7 +106,7 @@ export function RegionalPerformanceChart({ data, className }: RegionalPerformanc
                 name === 'achievement' ? 'Achievement' : 'Stores'
               ]}
             />
-            <Bar dataKey="achievement" radius={[0, 4, 4, 0]} maxBarSize={28}>
+            <Bar dataKey="achievement" radius={[0, 6, 6, 0]} maxBarSize={24}>
               {data.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={getBarColor(entry.achievement)} />
               ))}
@@ -128,46 +137,47 @@ export function TrendChart({ data, className }: TrendChartProps) {
       subtitle="Monthly score progression"
       className={className}
     >
-      <div className="h-[300px]">
+      <div className="h-[260px]">
         <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={data} margin={{ left: -10, right: 10 }}>
+          <AreaChart data={data} margin={{ left: -20, right: 10 }}>
             <defs>
               <linearGradient id="colorAvailability" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="hsl(358, 82%, 50%)" stopOpacity={0.3}/>
+                <stop offset="5%" stopColor="hsl(358, 82%, 50%)" stopOpacity={0.2}/>
                 <stop offset="95%" stopColor="hsl(358, 82%, 50%)" stopOpacity={0}/>
               </linearGradient>
               <linearGradient id="colorOverall" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="hsl(220, 70%, 50%)" stopOpacity={0.3}/>
+                <stop offset="5%" stopColor="hsl(220, 70%, 50%)" stopOpacity={0.2}/>
                 <stop offset="95%" stopColor="hsl(220, 70%, 50%)" stopOpacity={0}/>
               </linearGradient>
             </defs>
-            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
+            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" opacity={0.5} />
             <XAxis 
               dataKey="month" 
-              tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }} 
+              tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 11 }} 
               axisLine={false} 
               tickLine={false}
             />
             <YAxis 
-              tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }} 
+              tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 11 }} 
               axisLine={false} 
               tickLine={false}
             />
             <Tooltip
               contentStyle={{
-                backgroundColor: 'hsl(var(--card))',
+                backgroundColor: 'rgba(255,255,255,0.95)',
+                backdropFilter: 'blur(8px)',
                 border: '1px solid hsl(var(--border))',
-                borderRadius: '8px',
-                boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                borderRadius: '12px',
+                boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
               }}
               labelStyle={{ color: 'hsl(var(--foreground))', fontWeight: 600 }}
             />
             <Legend 
               verticalAlign="top" 
-              height={36}
+              height={32}
               iconType="circle"
-              iconSize={8}
-              formatter={(value) => <span className="text-sm text-muted-foreground">{value}</span>}
+              iconSize={6}
+              formatter={(value) => <span className="text-xs text-muted-foreground">{value}</span>}
             />
             <Area
               type="monotone"
@@ -211,43 +221,44 @@ export function BottlerComparisonChart({ data, className }: BottlerComparisonCha
       subtitle="Performance metrics by bottler"
       className={className}
     >
-      <div className="h-[300px]">
+      <div className="h-[260px]">
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={data} margin={{ left: -10, right: 10 }}>
-            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
+          <BarChart data={data} margin={{ left: -20, right: 10 }}>
+            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" opacity={0.5} />
             <XAxis 
               dataKey="bottler" 
-              tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 11 }} 
+              tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 10 }} 
               axisLine={false} 
               tickLine={false}
               interval={0}
               angle={-20}
               textAnchor="end"
-              height={60}
+              height={50}
             />
             <YAxis 
-              tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }} 
+              tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 11 }} 
               axisLine={false} 
               tickLine={false}
             />
             <Tooltip
               contentStyle={{
-                backgroundColor: 'hsl(var(--card))',
+                backgroundColor: 'rgba(255,255,255,0.95)',
+                backdropFilter: 'blur(8px)',
                 border: '1px solid hsl(var(--border))',
-                borderRadius: '8px',
-                boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                borderRadius: '12px',
+                boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
               }}
               labelStyle={{ color: 'hsl(var(--foreground))', fontWeight: 600 }}
             />
             <Legend 
               verticalAlign="top" 
-              height={36}
+              height={32}
               iconType="circle"
-              iconSize={8}
-              formatter={(value) => <span className="text-sm text-muted-foreground">{value}</span>}
+              iconSize={6}
+              formatter={(value) => <span className="text-xs text-muted-foreground">{value}</span>}
             />
-            <Bar dataKey="avgScore" name="Avg Score" fill="hsl(358, 82%, 50%)" radius={[4, 4, 0, 0]} maxBarSize={40} />
-            <Bar dataKey="availability" name="Availability" fill="hsl(220, 70%, 50%)" radius={[4, 4, 0, 0]} maxBarSize={40} />
+            <Bar dataKey="avgScore" name="Avg Score" fill="hsl(358, 82%, 50%)" radius={[4, 4, 0, 0]} maxBarSize={32} />
+            <Bar dataKey="availability" name="Availability" fill="hsl(220, 70%, 50%)" radius={[4, 4, 0, 0]} maxBarSize={32} />
           </BarChart>
         </ResponsiveContainer>
       </div>

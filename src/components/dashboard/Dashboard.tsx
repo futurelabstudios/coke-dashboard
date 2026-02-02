@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { Sidebar } from '@/components/dashboard/Sidebar';
 import { Header } from '@/components/dashboard/Header';
 import { KPICard, KPICardGroup } from '@/components/dashboard/KPICard';
@@ -10,13 +10,15 @@ import {
 } from '@/components/dashboard/PerformanceChart';
 import { DataTable } from '@/components/dashboard/DataTable';
 import { Leaderboard } from '@/components/dashboard/Leaderboard';
+import { StoreDetailModal } from '@/components/dashboard/StoreDetailModal';
+import { KPIDrilldown } from '@/components/dashboard/KPIDrilldown';
 import {
   storeData,
   regionSummaryData,
   bottlerPerformanceData,
   monthlyTrendData,
   calculateKPISummary,
-  getUniqueValues,
+  StoreData,
   formatNumber,
 } from '@/data/salesData';
 import {
@@ -25,10 +27,10 @@ import {
   Thermometer,
   Package,
   Target,
-  Percent,
-  AlertTriangle,
   Zap,
+  AlertTriangle,
 } from 'lucide-react';
+import { toast } from 'sonner';
 
 // Filter configuration
 const filterConfigs: FilterConfig[] = [
@@ -81,6 +83,9 @@ export function Dashboard() {
   const [activeNav, setActiveNav] = useState('overview');
   const [filters, setFilters] = useState<Record<string, string>>({});
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedStore, setSelectedStore] = useState<StoreData | null>(null);
+  const [drilldownKPI, setDrilldownKPI] = useState<string | null>(null);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   // Filter the store data based on current filters
   const filteredData = useMemo(() => {
@@ -138,30 +143,140 @@ export function Dashboard() {
 
   const handleFilterChange = (id: string, value: string) => {
     setFilters((prev) => ({ ...prev, [id]: value }));
+    toast.success(`Filter applied: ${id} = ${value === 'all' ? 'All' : value}`);
   };
 
   const handleClearFilters = () => {
     setFilters({});
     setSearchQuery('');
+    toast.info('All filters cleared');
   };
 
-  const handleExport = () => {
-    // Export functionality would go here
-    console.log('Exporting data...');
+  const handleExport = useCallback(() => {
+    // Generate CSV content
+    const headers = [
+      'Global ID',
+      'Outlet Name',
+      'Region',
+      'Unit',
+      'Bottler',
+      'VPO Class',
+      'Town',
+      'District',
+      'State',
+      'Availability',
+      'Cooler',
+      'Activation',
+      'SOVI',
+      'Purity %',
+      'Overall Score',
+    ];
+
+    const rows = filteredData.map((store) => [
+      store.globalId,
+      store.outletName,
+      store.region,
+      store.unit,
+      store.bottler,
+      store.vpoClass,
+      store.townName,
+      store.district,
+      store.state,
+      store.availabilityTotal,
+      store.coolerTotal,
+      store.activationTotal,
+      store.totalSovi,
+      store.coolerPurityPercent,
+      store.overallTotalScore,
+    ]);
+
+    const csvContent = [
+      headers.join(','),
+      ...rows.map((row) => row.map((cell) => `"${cell}"`).join(',')),
+    ].join('\n');
+
+    // Create and download file
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `store-performance-${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    toast.success(`Exported ${filteredData.length} stores to CSV`);
+  }, [filteredData]);
+
+  const handleRefresh = useCallback(() => {
+    setIsRefreshing(true);
+    toast.loading('Refreshing data...');
+    
+    // Simulate refresh delay
+    setTimeout(() => {
+      setIsRefreshing(false);
+      toast.dismiss();
+      toast.success('Data refreshed successfully', {
+        description: `Last updated: ${new Date().toLocaleTimeString()}`,
+      });
+    }, 1500);
+  }, []);
+
+  const handleNavChange = (id: string) => {
+    setActiveNav(id);
+    
+    const navLabels: Record<string, string> = {
+      overview: 'Overview',
+      stores: 'Store Information',
+      regions: 'Regional Summary',
+      coolers: 'Impure Coolers',
+      missing: 'Missing Coolers',
+      metrics: 'Usage Metrics',
+      availability: 'Availability',
+    };
+    
+    toast.info(`Navigated to ${navLabels[id] || id}`);
   };
+
+  const handleKPIClick = (kpiType: string) => {
+    setDrilldownKPI(kpiType);
+  };
+
+  const handleStoreClick = (store: StoreData) => {
+    setSelectedStore(store);
+  };
+
+  // Get filtered data based on active navigation
+  const getNavFilteredData = () => {
+    switch (activeNav) {
+      case 'coolers':
+        return filteredData.filter((s) => s.coolerPurityPercent < 100);
+      case 'missing':
+        return filteredData.filter((s) => !s.coolerPresence);
+      default:
+        return filteredData;
+    }
+  };
+
+  const displayData = getNavFilteredData();
 
   return (
     <div className="flex h-screen overflow-hidden bg-background">
       {/* Sidebar */}
       <Sidebar 
         activeItem={activeNav} 
-        onItemChange={setActiveNav}
+        onItemChange={handleNavChange}
         className="hidden lg:flex"
       />
 
       {/* Main content */}
       <div className="flex flex-1 flex-col overflow-hidden">
-        <Header title="Sales Intelligence Dashboard" />
+        <Header 
+          title="Sales Intelligence Dashboard" 
+          onRefresh={handleRefresh}
+          isRefreshing={isRefreshing}
+        />
 
         {/* Content area */}
         <main className="flex-1 overflow-y-auto">
@@ -187,6 +302,7 @@ export function Dashboard() {
                 variant="primary"
                 trend="up"
                 trendValue="+12%"
+                onClick={() => handleKPIClick('stores')}
               />
               <KPICard
                 title="Availability"
@@ -196,6 +312,7 @@ export function Dashboard() {
                 variant="default"
                 trend="up"
                 trendValue="+5.2"
+                onClick={() => handleKPIClick('availability')}
               />
               <KPICard
                 title="Cooler Score"
@@ -205,6 +322,7 @@ export function Dashboard() {
                 variant="default"
                 trend="up"
                 trendValue="+3.1"
+                onClick={() => handleKPIClick('cooler')}
               />
               <KPICard
                 title="Activation"
@@ -213,6 +331,7 @@ export function Dashboard() {
                 icon={Zap}
                 variant="default"
                 trend="stable"
+                onClick={() => handleKPIClick('activation')}
               />
               <KPICard
                 title="Purity Rate"
@@ -221,6 +340,7 @@ export function Dashboard() {
                 icon={Target}
                 variant={kpis.purityRate >= 80 ? 'success' : kpis.purityRate >= 50 ? 'warning' : 'danger'}
                 trend={kpis.purityRate >= 80 ? 'up' : 'down'}
+                onClick={() => handleKPIClick('purity')}
               />
               <KPICard
                 title="Overall Score"
@@ -230,6 +350,7 @@ export function Dashboard() {
                 variant="primary"
                 trend="up"
                 trendValue="+8.5"
+                onClick={() => handleKPIClick('overall')}
               />
             </KPICardGroup>
 
@@ -249,17 +370,22 @@ export function Dashboard() {
                 title="Top Performers"
                 subtitle="ASM Rankings"
                 items={asmLeaderboard}
+                onItemClick={(item) => {
+                  toast.info(`Selected ASM: ${item.name}`, {
+                    description: `Average score: ${item.score.toFixed(1)}`,
+                  });
+                }}
               />
             </div>
 
             {/* Data table */}
             <DataTable 
-              data={filteredData}
-              onRowClick={(store) => console.log('Selected store:', store)}
+              data={displayData}
+              onRowClick={handleStoreClick}
             />
 
             {/* Alerts section */}
-            {filteredData.some((s) => s.coolerPurityPercent < 50) && (
+            {displayData.some((s) => s.coolerPurityPercent < 50) && (
               <div className="rounded-xl border border-danger/20 bg-danger-muted p-5">
                 <div className="flex items-start gap-3">
                   <div className="flex h-10 w-10 items-center justify-center rounded-full bg-danger/20">
@@ -268,15 +394,19 @@ export function Dashboard() {
                   <div>
                     <h3 className="font-semibold text-danger">Action Required: Low Purity Stores</h3>
                     <p className="mt-1 text-sm text-muted-foreground">
-                      {filteredData.filter((s) => s.coolerPurityPercent < 50).length} stores have 
+                      {displayData.filter((s) => s.coolerPurityPercent < 50).length} stores have 
                       cooler purity below 50%. Immediate attention needed to improve brand visibility.
                     </p>
                     <ul className="mt-3 space-y-1">
-                      {filteredData
+                      {displayData
                         .filter((s) => s.coolerPurityPercent < 50)
                         .slice(0, 3)
                         .map((store) => (
-                          <li key={store.id} className="text-sm text-danger">
+                          <li 
+                            key={store.id} 
+                            className="text-sm text-danger cursor-pointer hover:underline"
+                            onClick={() => handleStoreClick(store)}
+                          >
                             • {store.outletName} ({store.coolerPurityPercent.toFixed(1)}% purity)
                           </li>
                         ))}
@@ -288,6 +418,21 @@ export function Dashboard() {
           </div>
         </main>
       </div>
+
+      {/* Store Detail Modal */}
+      <StoreDetailModal
+        store={selectedStore}
+        open={!!selectedStore}
+        onClose={() => setSelectedStore(null)}
+      />
+
+      {/* KPI Drilldown Modal */}
+      <KPIDrilldown
+        kpiType={drilldownKPI}
+        data={filteredData}
+        open={!!drilldownKPI}
+        onClose={() => setDrilldownKPI(null)}
+      />
     </div>
   );
 }

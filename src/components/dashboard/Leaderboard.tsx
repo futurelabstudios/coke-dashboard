@@ -19,6 +19,7 @@ interface LeaderboardProps {
   items: LeaderboardItem[];
   showMedals?: boolean;
   className?: string;
+  onItemClick?: (item: LeaderboardItem) => void;
 }
 
 export function Leaderboard({
@@ -27,6 +28,7 @@ export function Leaderboard({
   items,
   showMedals = true,
   className,
+  onItemClick,
 }: LeaderboardProps) {
   const TrendIcon = ({ trend }: { trend?: 'up' | 'down' | 'stable' }) => {
     if (trend === 'up') return <TrendingUp className="h-3.5 w-3.5 text-success" />;
@@ -37,7 +39,7 @@ export function Leaderboard({
   const getMedalColor = (rank: number) => {
     if (rank === 1) return 'text-warning bg-warning/10';
     if (rank === 2) return 'text-muted-foreground bg-muted';
-    if (rank === 3) return 'text-orange-600 bg-orange-100';
+    if (rank === 3) return 'text-accent-foreground bg-accent';
     return 'text-muted-foreground bg-muted/50';
   };
 
@@ -55,9 +57,11 @@ export function Leaderboard({
         {items.map((item) => (
           <div
             key={item.id}
+            onClick={() => onItemClick?.(item)}
             className={cn(
-              'flex items-center gap-4 px-5 py-3 transition-colors hover:bg-accent/50',
-              item.rank <= 3 && 'bg-accent/20'
+              'flex items-center gap-4 px-5 py-3 transition-colors',
+              item.rank <= 3 && 'bg-accent/20',
+              onItemClick && 'cursor-pointer hover:bg-accent/50'
             )}
           >
             {/* Rank */}

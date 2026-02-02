@@ -1,4 +1,4 @@
-import { Bell, Search, User, RefreshCw } from 'lucide-react';
+import { Bell, Search, User, RefreshCw, LogOut, Settings, UserCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -10,13 +10,75 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
+import { toast } from 'sonner';
+import { useState } from 'react';
+
+interface Notification {
+  id: string;
+  title: string;
+  description: string;
+  read: boolean;
+  time: string;
+}
 
 interface HeaderProps {
   title?: string;
   className?: string;
+  onRefresh?: () => void;
+  isRefreshing?: boolean;
 }
 
-export function Header({ title = 'Sales Intelligence', className }: HeaderProps) {
+export function Header({ 
+  title = 'Sales Intelligence', 
+  className,
+  onRefresh,
+  isRefreshing = false,
+}: HeaderProps) {
+  const [notifications, setNotifications] = useState<Notification[]>([
+    { id: '1', title: 'Impure Cooler Alert', description: '3 stores reported impure coolers in Chandigarh', read: false, time: '5m ago' },
+    { id: '2', title: 'Missing Cooler Stores', description: '12 stores missing cooler presence this week', read: false, time: '1h ago' },
+    { id: '3', title: 'Target Achievement', description: 'CBO region achieved 104% of monthly target', read: true, time: '2h ago' },
+  ]);
+
+  const [searchValue, setSearchValue] = useState('');
+
+  const unreadCount = notifications.filter((n) => !n.read).length;
+
+  const handleNotificationClick = (notification: Notification) => {
+    setNotifications((prev) =>
+      prev.map((n) => (n.id === notification.id ? { ...n, read: true } : n))
+    );
+    toast.info(notification.title, {
+      description: notification.description,
+    });
+  };
+
+  const handleMarkAllRead = () => {
+    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+    toast.success('All notifications marked as read');
+  };
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchValue.trim()) {
+      toast.info(`Searching for: ${searchValue}`);
+    }
+  };
+
+  const handleProfileAction = (action: string) => {
+    switch (action) {
+      case 'profile':
+        toast.info('Opening profile settings...');
+        break;
+      case 'settings':
+        toast.info('Opening application settings...');
+        break;
+      case 'logout':
+        toast.success('Logged out successfully');
+        break;
+    }
+  };
+
   return (
     <header className={cn('flex h-16 items-center justify-between border-b bg-card px-6', className)}>
       {/* Left side */}
@@ -31,17 +93,25 @@ export function Header({ title = 'Sales Intelligence', className }: HeaderProps)
       {/* Right side */}
       <div className="flex items-center gap-3">
         {/* Search */}
-        <div className="relative hidden md:block">
+        <form onSubmit={handleSearch} className="relative hidden md:block">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
-            placeholder="Search..."
+            placeholder="Search stores, regions..."
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
             className="w-64 bg-background pl-9"
           />
-        </div>
+        </form>
 
         {/* Refresh */}
-        <Button variant="ghost" size="icon" className="text-muted-foreground">
-          <RefreshCw className="h-4 w-4" />
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          className="text-muted-foreground"
+          onClick={onRefresh}
+          disabled={isRefreshing}
+        >
+          <RefreshCw className={cn('h-4 w-4', isRefreshing && 'animate-spin')} />
         </Button>
 
         {/* Notifications */}
@@ -49,26 +119,47 @@ export function Header({ title = 'Sales Intelligence', className }: HeaderProps)
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon" className="relative text-muted-foreground">
               <Bell className="h-4 w-4" />
-              <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-danger text-[10px] font-bold text-danger-foreground">
-                3
-              </span>
+              {unreadCount > 0 && (
+                <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-danger text-[10px] font-bold text-danger-foreground">
+                  {unreadCount}
+                </span>
+              )}
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-80">
-            <DropdownMenuLabel>Notifications</DropdownMenuLabel>
+            <div className="flex items-center justify-between px-2 py-1.5">
+              <DropdownMenuLabel className="p-0">Notifications</DropdownMenuLabel>
+              {unreadCount > 0 && (
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="h-auto p-1 text-xs text-primary hover:text-primary"
+                  onClick={handleMarkAllRead}
+                >
+                  Mark all read
+                </Button>
+              )}
+            </div>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="flex flex-col items-start gap-1 py-3">
-              <span className="font-medium">Impure Cooler Alert</span>
-              <span className="text-xs text-muted-foreground">3 stores reported impure coolers in Chandigarh</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="flex flex-col items-start gap-1 py-3">
-              <span className="font-medium">Missing Cooler Stores</span>
-              <span className="text-xs text-muted-foreground">12 stores missing cooler presence this week</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="flex flex-col items-start gap-1 py-3">
-              <span className="font-medium">Target Achievement</span>
-              <span className="text-xs text-muted-foreground">CBO region achieved 104% of monthly target</span>
-            </DropdownMenuItem>
+            {notifications.map((notification) => (
+              <DropdownMenuItem 
+                key={notification.id}
+                className={cn(
+                  'flex flex-col items-start gap-1 py-3 cursor-pointer',
+                  !notification.read && 'bg-accent/50'
+                )}
+                onClick={() => handleNotificationClick(notification)}
+              >
+                <div className="flex items-center gap-2 w-full">
+                  <span className="font-medium flex-1">{notification.title}</span>
+                  {!notification.read && (
+                    <span className="h-2 w-2 rounded-full bg-primary" />
+                  )}
+                </div>
+                <span className="text-xs text-muted-foreground">{notification.description}</span>
+                <span className="text-xs text-muted-foreground/70">{notification.time}</span>
+              </DropdownMenuItem>
+            ))}
           </DropdownMenuContent>
         </DropdownMenu>
 
@@ -82,12 +173,29 @@ export function Header({ title = 'Sales Intelligence', className }: HeaderProps)
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuLabel>
+              <div className="flex flex-col">
+                <span>Sales Manager</span>
+                <span className="text-xs font-normal text-muted-foreground">admin@cocacola.com</span>
+              </div>
+            </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Profile</DropdownMenuItem>
-            <DropdownMenuItem>Settings</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleProfileAction('profile')}>
+              <UserCircle className="mr-2 h-4 w-4" />
+              Profile
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleProfileAction('settings')}>
+              <Settings className="mr-2 h-4 w-4" />
+              Settings
+            </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Log out</DropdownMenuItem>
+            <DropdownMenuItem 
+              onClick={() => handleProfileAction('logout')}
+              className="text-danger focus:text-danger"
+            >
+              <LogOut className="mr-2 h-4 w-4" />
+              Log out
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

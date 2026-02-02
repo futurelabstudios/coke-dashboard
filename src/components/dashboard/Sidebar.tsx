@@ -14,6 +14,7 @@ import {
   HelpCircle,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 
 interface NavItem {
   id: string;
@@ -41,6 +42,22 @@ interface SidebarProps {
 export function Sidebar({ activeItem, onItemChange, className }: SidebarProps) {
   const [collapsed, setCollapsed] = useState(false);
 
+  const handleSettingsClick = () => {
+    toast.info('Settings', {
+      description: 'Settings panel coming soon',
+    });
+  };
+
+  const handleHelpClick = () => {
+    toast.info('Help & Support', {
+      description: 'Contact: support@cocacola-india.com',
+      action: {
+        label: 'Open Docs',
+        onClick: () => toast.success('Opening documentation...'),
+      },
+    });
+  };
+
   return (
     <div
       className={cn(
@@ -66,7 +83,10 @@ export function Sidebar({ activeItem, onItemChange, className }: SidebarProps) {
           variant="ghost"
           size="icon"
           className="h-8 w-8 text-sidebar-foreground hover:bg-sidebar-accent"
-          onClick={() => setCollapsed(!collapsed)}
+          onClick={() => {
+            setCollapsed(!collapsed);
+            toast.info(collapsed ? 'Sidebar expanded' : 'Sidebar collapsed');
+          }}
         >
           {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
         </Button>
@@ -113,6 +133,7 @@ export function Sidebar({ activeItem, onItemChange, className }: SidebarProps) {
       {/* Footer */}
       <div className="border-t border-sidebar-border p-2">
         <button
+          onClick={handleSettingsClick}
           className={cn(
             'flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-sidebar-foreground transition-colors hover:bg-sidebar-accent'
           )}
@@ -121,6 +142,7 @@ export function Sidebar({ activeItem, onItemChange, className }: SidebarProps) {
           {!collapsed && <span>Settings</span>}
         </button>
         <button
+          onClick={handleHelpClick}
           className={cn(
             'flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-sidebar-foreground transition-colors hover:bg-sidebar-accent'
           )}

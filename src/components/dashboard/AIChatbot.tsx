@@ -3,7 +3,6 @@ import { useState, useRef, useEffect } from 'react';
 // Built by Futurelab Studios
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { MessageCircle, Send, X, Bot, User, Minimize2, Maximize2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -123,47 +122,46 @@ export function AIChatbot() {
     "What's my target achievement?",
   ];
 
+  // Floating button when closed - prominent at bottom center on mobile
   if (!isOpen) {
     return (
-      <Button
-        onClick={() => setIsOpen(true)}
-        className="fixed bottom-4 right-4 z-50 h-14 w-14 sm:h-16 sm:w-16 sm:bottom-6 sm:right-6 rounded-2xl shadow-glow-lg hover:shadow-glow-md transition-all duration-300 btn-premium"
-        size="icon"
-      >
-        <MessageCircle className="h-6 w-6 sm:h-7 sm:w-7" />
-      </Button>
+      <div className="fixed bottom-0 left-0 right-0 z-50 pointer-events-none">
+        <div className="max-w-screen-xl mx-auto px-4 pb-4 sm:pb-6 flex justify-center sm:justify-end pointer-events-auto">
+          <Button
+            onClick={() => setIsOpen(true)}
+            className="h-14 px-6 sm:h-16 sm:px-8 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 bg-primary hover:bg-primary/90 gap-3"
+          >
+            <MessageCircle className="h-5 w-5 sm:h-6 sm:w-6" />
+            <span className="font-semibold text-sm sm:text-base">Ask AI Assistant</span>
+          </Button>
+        </div>
+      </div>
     );
   }
 
   return (
     <div className={cn(
       'fixed z-50 transition-all duration-300',
-      'bottom-0 right-0 left-0 sm:left-auto sm:bottom-6 sm:right-6',
-      'w-full sm:w-[420px]',
-      isMinimized ? 'h-16' : 'h-[85vh] sm:h-[550px]'
+      'bottom-0 left-0 right-0 sm:left-auto sm:right-4 sm:bottom-4 lg:right-6 lg:bottom-6',
+      'w-full sm:w-[400px] lg:w-[440px]',
+      isMinimized ? 'h-16' : 'h-[90vh] sm:h-[600px]'
     )}>
-      {/* Glass container */}
+      {/* Clean white container with subtle shadow */}
       <div className={cn(
-        'h-full w-full glass-card rounded-none sm:rounded-2xl overflow-hidden',
-        'border-t sm:border border-border/30',
-        'shadow-elevated'
+        'h-full w-full bg-card rounded-none sm:rounded-2xl overflow-hidden',
+        'border-t sm:border border-border',
+        'shadow-xl sm:shadow-2xl'
       )}>
-        {/* Decorative gradient */}
-        <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-primary/10 to-transparent pointer-events-none" />
-        
-        {/* Header */}
-        <div className="relative flex items-center justify-between border-b border-border/30 p-4 bg-gradient-to-r from-card/50 to-transparent">
+        {/* Header - Bold red accent */}
+        <div className="relative flex items-center justify-between p-4 bg-primary text-primary-foreground">
           <div className="flex items-center gap-3">
-            <div className="relative">
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/80 shadow-glow-sm">
-                <Bot className="h-5 w-5 text-primary-foreground" />
-              </div>
-              <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-success border-2 border-card animate-pulse" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-foreground/20">
+              <Bot className="h-5 w-5" />
             </div>
             <div>
-              <h3 className="text-sm font-display font-bold text-foreground">AI Assistant</h3>
+              <h3 className="text-sm font-display font-bold">AI Sales Assistant</h3>
               {!isMinimized && (
-                <p className="text-[10px] text-muted-foreground">Ask me about your data</p>
+                <p className="text-[10px] text-primary-foreground/80">Powered by Coca-Cola India</p>
               )}
             </div>
           </div>
@@ -171,7 +169,7 @@ export function AIChatbot() {
             <Button
               variant="ghost"
               size="icon"
-              className="h-9 w-9 rounded-lg hover:bg-accent/50"
+              className="h-9 w-9 rounded-lg hover:bg-primary-foreground/20 text-primary-foreground"
               onClick={() => setIsMinimized(!isMinimized)}
             >
               {isMinimized ? (
@@ -183,7 +181,7 @@ export function AIChatbot() {
             <Button
               variant="ghost"
               size="icon"
-              className="h-9 w-9 rounded-lg hover:bg-danger/10 hover:text-danger"
+              className="h-9 w-9 rounded-lg hover:bg-primary-foreground/20 text-primary-foreground"
               onClick={() => setIsOpen(false)}
             >
               <X className="h-4 w-4" />
@@ -191,8 +189,8 @@ export function AIChatbot() {
           </div>
         </div>
 
-      {!isMinimized && (
-          <div className="flex h-[calc(100%-72px)] flex-col">
+        {!isMinimized && (
+          <div className="flex h-[calc(100%-72px)] flex-col bg-background">
             <ScrollArea className="flex-1 p-4" ref={scrollRef}>
               <div className="space-y-4">
                 {messages.map((message) => (
@@ -204,7 +202,7 @@ export function AIChatbot() {
                     )}
                   >
                     {message.role === 'assistant' && (
-                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-primary/20 to-primary/10 ring-1 ring-primary/20">
+                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 ring-1 ring-primary/20">
                         <Bot className="h-4 w-4 text-primary" />
                       </div>
                     )}
@@ -212,25 +210,25 @@ export function AIChatbot() {
                       className={cn(
                         'max-w-[80%] rounded-2xl px-4 py-3 text-sm',
                         message.role === 'user'
-                          ? 'bg-gradient-to-br from-primary to-primary/90 text-primary-foreground rounded-br-md'
-                          : 'bg-muted/50 border border-border/30 rounded-bl-md'
+                          ? 'bg-primary text-primary-foreground rounded-br-md'
+                          : 'bg-muted text-foreground rounded-bl-md'
                       )}
                     >
                       <p className="whitespace-pre-wrap leading-relaxed">{message.content}</p>
                     </div>
                     {message.role === 'user' && (
-                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-secondary ring-1 ring-border/30">
-                        <User className="h-4 w-4" />
+                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-secondary ring-1 ring-border">
+                        <User className="h-4 w-4 text-muted-foreground" />
                       </div>
                     )}
                   </div>
                 ))}
                 {isTyping && (
                   <div className="flex gap-3">
-                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-primary/20 to-primary/10 ring-1 ring-primary/20">
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 ring-1 ring-primary/20">
                       <Bot className="h-4 w-4 text-primary" />
                     </div>
-                    <div className="rounded-2xl rounded-bl-md bg-muted/50 border border-border/30 px-4 py-3">
+                    <div className="rounded-2xl rounded-bl-md bg-muted px-4 py-3">
                       <div className="flex gap-1.5">
                         <span className="h-2 w-2 animate-bounce rounded-full bg-primary/60" style={{ animationDelay: '0ms' }} />
                         <span className="h-2 w-2 animate-bounce rounded-full bg-primary/60" style={{ animationDelay: '150ms' }} />
@@ -244,7 +242,7 @@ export function AIChatbot() {
 
             {/* Suggested questions */}
             {messages.length <= 2 && (
-              <div className="border-t border-border/30 px-4 py-3 bg-muted/20">
+              <div className="border-t border-border px-4 py-3 bg-muted/30">
                 <p className="mb-2.5 text-[10px] font-medium text-muted-foreground uppercase tracking-wider">Quick questions</p>
                 <div className="flex flex-wrap gap-2">
                   {suggestedQuestions.map((q, i) => (
@@ -252,7 +250,7 @@ export function AIChatbot() {
                       key={i}
                       variant="outline"
                       size="sm"
-                      className="h-8 text-xs rounded-lg border-border/30 bg-muted/30 hover:bg-primary/10 hover:text-primary hover:border-primary/30 transition-all"
+                      className="h-8 text-xs rounded-full border-border bg-card hover:bg-primary/5 hover:text-primary hover:border-primary/30 transition-all"
                       onClick={() => {
                         setInput(q);
                         inputRef.current?.focus();
@@ -265,23 +263,23 @@ export function AIChatbot() {
               </div>
             )}
 
-            {/* Input */}
-            <div className="border-t border-border/30 p-4 bg-gradient-to-t from-muted/20 to-transparent">
+            {/* Input - Clean and prominent */}
+            <div className="border-t border-border p-4 bg-card">
               <div className="flex gap-3">
                 <Input
                   ref={inputRef}
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyPress={handleKeyPress}
-                  placeholder="Ask about your data..."
-                  className="flex-1 bg-muted/30 border-border/30 focus:bg-muted/50 rounded-xl h-11"
+                  placeholder="Ask about your sales data..."
+                  className="flex-1 bg-muted border-0 focus:ring-2 focus:ring-primary/20 rounded-full h-12 px-5"
                   disabled={isTyping}
                 />
                 <Button
                   onClick={handleSend}
                   size="icon"
                   disabled={!input.trim() || isTyping}
-                  className="h-11 w-11 rounded-xl btn-premium"
+                  className="h-12 w-12 rounded-full bg-primary hover:bg-primary/90"
                 >
                   <Send className="h-4 w-4" />
                 </Button>

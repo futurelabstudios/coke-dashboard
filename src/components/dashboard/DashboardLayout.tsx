@@ -1,11 +1,14 @@
 import { useState, useCallback } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import { Sidebar } from '@/components/dashboard/Sidebar';
 import { Header } from '@/components/dashboard/Header';
+import { AISummary } from '@/components/dashboard/AISummary';
+import { AIChatbot } from '@/components/dashboard/AIChatbot';
 import { toast } from 'sonner';
 
 export function DashboardLayout() {
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const location = useLocation();
 
   const handleRefresh = useCallback(() => {
     setIsRefreshing(true);
@@ -33,10 +36,16 @@ export function DashboardLayout() {
 
         <main className="flex-1 overflow-y-auto">
           <div className="container py-6">
+            <div className="mb-6">
+              <AISummary currentPath={location.pathname} />
+            </div>
             <Outlet />
           </div>
         </main>
       </div>
+
+      {/* AI Chatbot - floating */}
+      <AIChatbot />
     </div>
   );
 }

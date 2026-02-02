@@ -84,8 +84,11 @@ export function Header({
       {/* Left side */}
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-2">
-          <h1 className="text-lg font-semibold text-foreground">{title}</h1>
-          <span className="text-xs text-muted-foreground">for Coca-Cola India</span>
+          <img src="/coca-cola-logo.png" alt="Coca-Cola India" className="h-8 w-8 rounded object-cover" />
+          <div className="flex flex-col">
+            <h1 className="text-lg font-semibold text-foreground leading-tight">{title}</h1>
+            <span className="text-[10px] font-medium text-primary">COCA-COLA INDIA</span>
+          </div>
         </div>
         <span className="flex items-center gap-1.5 rounded-full bg-success/10 px-2.5 py-1 text-xs font-medium text-success">
           <span className="h-1.5 w-1.5 rounded-full bg-success animate-pulse" />

@@ -16,6 +16,8 @@ import {
   HelpCircle,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import futurelabLogo from '@/assets/futurelab-logo.png';
+import cocaColaLogo from '@/assets/coca-cola-logo.png';
 import { toast } from 'sonner';
 
 interface NavItem {
@@ -76,24 +78,40 @@ export function Sidebar({ className }: SidebarProps) {
             className="flex items-center gap-2 cursor-pointer"
             onClick={() => navigate('/')}
           >
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-              <span className="text-sm font-bold text-primary-foreground">R</span>
-            </div>
-            <div>
-              <span className="font-bold text-sidebar-foreground">RED</span>
-              <span className="ml-1 text-xs font-medium text-primary">LIVE</span>
+            <img src={cocaColaLogo} alt="Coca-Cola India" className="h-8 w-8 rounded object-cover" />
+            <div className="flex flex-col">
+              <div>
+                <span className="font-bold text-sidebar-foreground">RED</span>
+                <span className="ml-1 text-xs font-medium text-primary">LIVE</span>
+              </div>
+              <span className="text-[9px] font-medium text-primary/80">COCA-COLA INDIA</span>
             </div>
           </div>
         )}
+        {collapsed && (
+          <img src={cocaColaLogo} alt="Coca-Cola India" className="h-8 w-8 rounded object-cover mx-auto" />
+        )}
+        {!collapsed && (
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8 text-sidebar-foreground hover:bg-sidebar-accent"
+            onClick={() => setCollapsed(!collapsed)}
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
+        )}
+      </div>
+      {collapsed && (
         <Button
           variant="ghost"
           size="icon"
-          className="h-8 w-8 text-sidebar-foreground hover:bg-sidebar-accent"
+          className="mx-auto mt-2 h-8 w-8 text-sidebar-foreground hover:bg-sidebar-accent"
           onClick={() => setCollapsed(!collapsed)}
         >
-          {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+          <ChevronRight className="h-4 w-4" />
         </Button>
-      </div>
+      )}
 
       {/* Navigation */}
       <nav className="flex-1 space-y-1 p-2">
@@ -156,10 +174,16 @@ export function Sidebar({ className }: SidebarProps) {
         
         {/* Futurelab Studios branding */}
         {!collapsed && (
-          <div className="mt-4 px-3 py-2 text-center">
-            <p className="text-[10px] text-sidebar-foreground/50">
-              Built by <span className="font-medium text-sidebar-foreground/70">Futurelab Studios</span>
+          <div className="mt-4 px-3 py-2 flex flex-col items-center gap-2">
+            <img src={futurelabLogo} alt="Futurelab Studios" className="h-6 opacity-70" />
+            <p className="text-[9px] text-sidebar-foreground/50">
+              Built by Futurelab Studios
             </p>
+          </div>
+        )}
+        {collapsed && (
+          <div className="mt-2 flex justify-center">
+            <img src={futurelabLogo} alt="Futurelab Studios" className="h-5 opacity-60" />
           </div>
         )}
       </div>

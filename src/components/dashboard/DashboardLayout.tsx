@@ -29,14 +29,14 @@ export function DashboardLayout() {
 
       <div className="flex flex-1 flex-col overflow-hidden">
         <Header 
-          title="Sales Intelligence Dashboard" 
+          title="Sales Intelligence" 
           onRefresh={handleRefresh}
           isRefreshing={isRefreshing}
         />
 
         <main className="flex-1 overflow-y-auto">
-          <div className="container py-6">
-            <div className="mb-6">
+          <div className="px-4 py-4 sm:px-6 sm:py-6">
+            <div className="mb-4 sm:mb-6">
               <AISummary currentPath={location.pathname} />
             </div>
             <Outlet />

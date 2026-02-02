@@ -198,7 +198,7 @@ export default function Overview() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <FilterBar
         filters={filterConfigs}
         values={filters}
@@ -209,7 +209,7 @@ export default function Overview() {
         onSearchChange={setSearchQuery}
       />
 
-      <KPICardGroup>
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-4">
         <KPICard
           title="Store Count"
           value={formatNumber(kpis.storeCount)}
@@ -268,14 +268,14 @@ export default function Overview() {
           trendValue="+8.5"
           onClick={() => handleKPIClick('overall')}
         />
-      </KPICardGroup>
+      </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid gap-4 sm:gap-6 lg:grid-cols-2">
         <TrendChart data={monthlyTrendData} />
         <RegionalPerformanceChart data={regionSummaryData} />
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-3">
+      <div className="grid gap-4 sm:gap-6 lg:grid-cols-3">
         <BottlerComparisonChart 
           data={bottlerPerformanceData.slice(0, 6)} 
           className="lg:col-span-2"

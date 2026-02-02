@@ -242,31 +242,45 @@ export function AISummary({ currentPath, className }: AISummaryProps) {
   const content = summary[language];
 
   return (
-    <Card className={cn('border-primary/20 bg-gradient-to-br from-primary/5 to-transparent', className)}>
-      <CardHeader className="pb-2 sm:pb-3 px-3 sm:px-6 pt-3 sm:pt-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-          <div className="flex items-center gap-2">
-            <div className="flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-lg bg-primary/10">
-              <Info className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary" />
+    <div className={cn('glass-card glow-border rounded-2xl overflow-hidden animate-fade-in', className)}>
+      {/* Decorative gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-chart-2/5 pointer-events-none" />
+      <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+      
+      <div className="relative p-4 sm:p-6">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 ring-1 ring-primary/30">
+              <Info className="h-5 w-5 text-primary" />
             </div>
-            <CardTitle className="text-sm sm:text-base font-semibold">
-              Information Summary
-            </CardTitle>
+            <div>
+              <h3 className="text-sm sm:text-base font-display font-bold text-foreground">
+                Information Summary
+              </h3>
+              <p className="text-[10px] sm:text-xs text-muted-foreground">AI-powered insights</p>
+            </div>
           </div>
-          <div className="flex items-center gap-1 rounded-lg bg-muted p-0.5 sm:p-1 self-start sm:self-auto">
+          <div className="flex items-center gap-1 rounded-xl bg-muted/50 p-1 self-start sm:self-auto border border-border/30">
             <Button
               variant={language === 'en' ? 'secondary' : 'ghost'}
               size="sm"
-              className="h-6 sm:h-7 px-2 text-[10px] sm:text-xs"
+              className={cn(
+                'h-7 sm:h-8 px-2.5 text-[10px] sm:text-xs rounded-lg transition-all',
+                language === 'en' && 'bg-primary/20 text-primary hover:bg-primary/30'
+              )}
               onClick={() => setLanguage('en')}
             >
-              <Languages className="mr-1 h-3 w-3 hidden sm:inline" />
+              <Languages className="mr-1.5 h-3 w-3 hidden sm:inline" />
               EN
             </Button>
             <Button
               variant={language === 'hinglish' ? 'secondary' : 'ghost'}
               size="sm"
-              className="h-6 sm:h-7 px-2 text-[10px] sm:text-xs"
+              className={cn(
+                'h-7 sm:h-8 px-2.5 text-[10px] sm:text-xs rounded-lg transition-all',
+                language === 'hinglish' && 'bg-primary/20 text-primary hover:bg-primary/30'
+              )}
               onClick={() => setLanguage('hinglish')}
             >
               Hinglish
@@ -274,35 +288,48 @@ export function AISummary({ currentPath, className }: AISummaryProps) {
             <Button
               variant={language === 'hi' ? 'secondary' : 'ghost'}
               size="sm"
-              className="h-6 sm:h-7 px-2 text-[10px] sm:text-xs"
+              className={cn(
+                'h-7 sm:h-8 px-2.5 text-[10px] sm:text-xs rounded-lg transition-all',
+                language === 'hi' && 'bg-primary/20 text-primary hover:bg-primary/30'
+              )}
               onClick={() => setLanguage('hi')}
             >
               हिंदी
             </Button>
           </div>
         </div>
-      </CardHeader>
-      <CardContent className="space-y-3 sm:space-y-4 px-3 sm:px-6 pb-3 sm:pb-6">
-        <div>
-          <h4 className="font-medium text-foreground text-sm sm:text-base">{content.title}</h4>
-          <p className="mt-1 text-xs sm:text-sm text-muted-foreground leading-relaxed">
-            {content.summary}
-          </p>
+
+        {/* Content */}
+        <div className="space-y-4">
+          <div className="p-3 sm:p-4 rounded-xl bg-muted/30 border border-border/20">
+            <h4 className="font-display font-semibold text-foreground text-sm sm:text-base mb-1">{content.title}</h4>
+            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+              {content.summary}
+            </p>
+          </div>
+          
+          <div className="space-y-2">
+            <h5 className="text-xs sm:text-sm font-semibold text-foreground flex items-center gap-2">
+              <span className="h-1 w-4 rounded-full bg-gradient-to-r from-primary to-primary/50" />
+              {language === 'en' ? 'Key Insights' : language === 'hinglish' ? 'Key Insights' : 'मुख्य जानकारी'}
+            </h5>
+            <ul className="space-y-2">
+              {content.insights.map((insight, index) => (
+                <li 
+                  key={index} 
+                  className="flex items-start gap-3 text-xs sm:text-sm text-muted-foreground p-2.5 rounded-lg bg-muted/20 border border-border/10 hover:bg-muted/30 transition-colors"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
+                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-primary/10 text-[10px] font-bold text-primary">
+                    {index + 1}
+                  </span>
+                  <span className="flex-1">{insight}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
-        <div className="space-y-1.5 sm:space-y-2">
-          <h5 className="text-xs sm:text-sm font-medium text-foreground">
-            {language === 'en' ? 'Key Insights:' : language === 'hinglish' ? 'Key Insights:' : 'मुख्य जानकारी:'}
-          </h5>
-          <ul className="space-y-1 sm:space-y-1.5">
-            {content.insights.map((insight, index) => (
-              <li key={index} className="flex items-start gap-2 text-xs sm:text-sm text-muted-foreground">
-                <span className="mt-1.5 h-1 w-1 sm:h-1.5 sm:w-1.5 shrink-0 rounded-full bg-primary" />
-                {insight}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

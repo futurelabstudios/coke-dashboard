@@ -31,12 +31,12 @@ export function ChartContainer({
   action,
 }: ChartContainerProps) {
   return (
-    <div className={cn('rounded-xl border bg-card p-5', className)}>
-      <div className="mb-4 flex items-start justify-between">
+    <div className={cn('glass-card rounded-2xl p-5 sm:p-6', className)}>
+      <div className="mb-5 flex items-start justify-between">
         <div>
-          <h3 className="font-semibold text-foreground">{title}</h3>
+          <h3 className="font-display font-bold text-foreground">{title}</h3>
           {subtitle && (
-            <p className="text-sm text-muted-foreground">{subtitle}</p>
+            <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">{subtitle}</p>
           )}
         </div>
         {action}

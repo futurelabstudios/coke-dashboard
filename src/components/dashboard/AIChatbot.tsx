@@ -127,154 +127,169 @@ export function AIChatbot() {
     return (
       <Button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-4 right-4 z-50 h-12 w-12 sm:h-14 sm:w-14 sm:bottom-6 sm:right-6 rounded-full shadow-lg hover:shadow-xl transition-shadow"
+        className="fixed bottom-4 right-4 z-50 h-14 w-14 sm:h-16 sm:w-16 sm:bottom-6 sm:right-6 rounded-2xl shadow-glow-lg hover:shadow-glow-md transition-all duration-300 btn-premium"
         size="icon"
       >
-        <MessageCircle className="h-5 w-5 sm:h-6 sm:w-6" />
+        <MessageCircle className="h-6 w-6 sm:h-7 sm:w-7" />
       </Button>
     );
   }
 
   return (
-    <Card className={cn(
-      'fixed z-50 shadow-2xl transition-all duration-200',
+    <div className={cn(
+      'fixed z-50 transition-all duration-300',
       'bottom-0 right-0 left-0 sm:left-auto sm:bottom-6 sm:right-6',
-      'w-full sm:w-96 rounded-none sm:rounded-xl',
-      isMinimized ? 'h-14' : 'h-[85vh] sm:h-[500px]'
+      'w-full sm:w-[420px]',
+      isMinimized ? 'h-16' : 'h-[85vh] sm:h-[550px]'
     )}>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 border-b p-3">
-        <div className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary">
-            <Bot className="h-4 w-4 text-primary-foreground" />
-          </div>
-          <div>
-            <CardTitle className="text-sm font-semibold">AI Assistant</CardTitle>
-            {!isMinimized && (
-              <p className="text-xs text-muted-foreground">Ask me about your data</p>
-            )}
-          </div>
-        </div>
-        <div className="flex items-center gap-1">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-8 w-8"
-            onClick={() => setIsMinimized(!isMinimized)}
-          >
-            {isMinimized ? (
-              <Maximize2 className="h-4 w-4" />
-            ) : (
-              <Minimize2 className="h-4 w-4" />
-            )}
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-8 w-8"
-            onClick={() => setIsOpen(false)}
-          >
-            <X className="h-4 w-4" />
-          </Button>
-        </div>
-      </CardHeader>
-
-      {!isMinimized && (
-        <CardContent className="flex h-[calc(100%-56px)] flex-col p-0">
-          <ScrollArea className="flex-1 p-4" ref={scrollRef}>
-            <div className="space-y-4">
-              {messages.map((message) => (
-                <div
-                  key={message.id}
-                  className={cn(
-                    'flex gap-2',
-                    message.role === 'user' ? 'justify-end' : 'justify-start'
-                  )}
-                >
-                  {message.role === 'assistant' && (
-                    <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary/10">
-                      <Bot className="h-4 w-4 text-primary" />
-                    </div>
-                  )}
-                  <div
-                    className={cn(
-                      'max-w-[80%] rounded-lg px-3 py-2 text-sm',
-                      message.role === 'user'
-                        ? 'bg-primary text-primary-foreground'
-                        : 'bg-muted'
-                    )}
-                  >
-                    <p className="whitespace-pre-wrap">{message.content}</p>
-                  </div>
-                  {message.role === 'user' && (
-                    <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-secondary">
-                      <User className="h-4 w-4" />
-                    </div>
-                  )}
-                </div>
-              ))}
-              {isTyping && (
-                <div className="flex gap-2">
-                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary/10">
-                    <Bot className="h-4 w-4 text-primary" />
-                  </div>
-                  <div className="rounded-lg bg-muted px-3 py-2">
-                    <div className="flex gap-1">
-                      <span className="h-2 w-2 animate-bounce rounded-full bg-muted-foreground/50" style={{ animationDelay: '0ms' }} />
-                      <span className="h-2 w-2 animate-bounce rounded-full bg-muted-foreground/50" style={{ animationDelay: '150ms' }} />
-                      <span className="h-2 w-2 animate-bounce rounded-full bg-muted-foreground/50" style={{ animationDelay: '300ms' }} />
-                    </div>
-                  </div>
-                </div>
+      {/* Glass container */}
+      <div className={cn(
+        'h-full w-full glass-card rounded-none sm:rounded-2xl overflow-hidden',
+        'border-t sm:border border-border/30',
+        'shadow-elevated'
+      )}>
+        {/* Decorative gradient */}
+        <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-primary/10 to-transparent pointer-events-none" />
+        
+        {/* Header */}
+        <div className="relative flex items-center justify-between border-b border-border/30 p-4 bg-gradient-to-r from-card/50 to-transparent">
+          <div className="flex items-center gap-3">
+            <div className="relative">
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/80 shadow-glow-sm">
+                <Bot className="h-5 w-5 text-primary-foreground" />
+              </div>
+              <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-success border-2 border-card animate-pulse" />
+            </div>
+            <div>
+              <h3 className="text-sm font-display font-bold text-foreground">AI Assistant</h3>
+              {!isMinimized && (
+                <p className="text-[10px] text-muted-foreground">Ask me about your data</p>
               )}
             </div>
-          </ScrollArea>
+          </div>
+          <div className="flex items-center gap-1">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-9 w-9 rounded-lg hover:bg-accent/50"
+              onClick={() => setIsMinimized(!isMinimized)}
+            >
+              {isMinimized ? (
+                <Maximize2 className="h-4 w-4" />
+              ) : (
+                <Minimize2 className="h-4 w-4" />
+              )}
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-9 w-9 rounded-lg hover:bg-danger/10 hover:text-danger"
+              onClick={() => setIsOpen(false)}
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
 
-          {/* Suggested questions */}
-          {messages.length <= 2 && (
-            <div className="border-t px-4 py-2">
-              <p className="mb-2 text-xs text-muted-foreground">Suggested questions:</p>
-              <div className="flex flex-wrap gap-1">
-                {suggestedQuestions.map((q, i) => (
-                  <Button
-                    key={i}
-                    variant="outline"
-                    size="sm"
-                    className="h-7 text-xs"
-                    onClick={() => {
-                      setInput(q);
-                      inputRef.current?.focus();
-                    }}
+      {!isMinimized && (
+          <div className="flex h-[calc(100%-72px)] flex-col">
+            <ScrollArea className="flex-1 p-4" ref={scrollRef}>
+              <div className="space-y-4">
+                {messages.map((message) => (
+                  <div
+                    key={message.id}
+                    className={cn(
+                      'flex gap-3 animate-fade-in',
+                      message.role === 'user' ? 'justify-end' : 'justify-start'
+                    )}
                   >
-                    {q}
-                  </Button>
+                    {message.role === 'assistant' && (
+                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-primary/20 to-primary/10 ring-1 ring-primary/20">
+                        <Bot className="h-4 w-4 text-primary" />
+                      </div>
+                    )}
+                    <div
+                      className={cn(
+                        'max-w-[80%] rounded-2xl px-4 py-3 text-sm',
+                        message.role === 'user'
+                          ? 'bg-gradient-to-br from-primary to-primary/90 text-primary-foreground rounded-br-md'
+                          : 'bg-muted/50 border border-border/30 rounded-bl-md'
+                      )}
+                    >
+                      <p className="whitespace-pre-wrap leading-relaxed">{message.content}</p>
+                    </div>
+                    {message.role === 'user' && (
+                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-secondary ring-1 ring-border/30">
+                        <User className="h-4 w-4" />
+                      </div>
+                    )}
+                  </div>
                 ))}
+                {isTyping && (
+                  <div className="flex gap-3">
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-primary/20 to-primary/10 ring-1 ring-primary/20">
+                      <Bot className="h-4 w-4 text-primary" />
+                    </div>
+                    <div className="rounded-2xl rounded-bl-md bg-muted/50 border border-border/30 px-4 py-3">
+                      <div className="flex gap-1.5">
+                        <span className="h-2 w-2 animate-bounce rounded-full bg-primary/60" style={{ animationDelay: '0ms' }} />
+                        <span className="h-2 w-2 animate-bounce rounded-full bg-primary/60" style={{ animationDelay: '150ms' }} />
+                        <span className="h-2 w-2 animate-bounce rounded-full bg-primary/60" style={{ animationDelay: '300ms' }} />
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </ScrollArea>
+
+            {/* Suggested questions */}
+            {messages.length <= 2 && (
+              <div className="border-t border-border/30 px-4 py-3 bg-muted/20">
+                <p className="mb-2.5 text-[10px] font-medium text-muted-foreground uppercase tracking-wider">Quick questions</p>
+                <div className="flex flex-wrap gap-2">
+                  {suggestedQuestions.map((q, i) => (
+                    <Button
+                      key={i}
+                      variant="outline"
+                      size="sm"
+                      className="h-8 text-xs rounded-lg border-border/30 bg-muted/30 hover:bg-primary/10 hover:text-primary hover:border-primary/30 transition-all"
+                      onClick={() => {
+                        setInput(q);
+                        inputRef.current?.focus();
+                      }}
+                    >
+                      {q}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Input */}
+            <div className="border-t border-border/30 p-4 bg-gradient-to-t from-muted/20 to-transparent">
+              <div className="flex gap-3">
+                <Input
+                  ref={inputRef}
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyPress={handleKeyPress}
+                  placeholder="Ask about your data..."
+                  className="flex-1 bg-muted/30 border-border/30 focus:bg-muted/50 rounded-xl h-11"
+                  disabled={isTyping}
+                />
+                <Button
+                  onClick={handleSend}
+                  size="icon"
+                  disabled={!input.trim() || isTyping}
+                  className="h-11 w-11 rounded-xl btn-premium"
+                >
+                  <Send className="h-4 w-4" />
+                </Button>
               </div>
             </div>
-          )}
-
-          {/* Input */}
-          <div className="border-t p-3">
-            <div className="flex gap-2">
-              <Input
-                ref={inputRef}
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyPress={handleKeyPress}
-                placeholder="Ask about your data..."
-                className="flex-1"
-                disabled={isTyping}
-              />
-              <Button
-                onClick={handleSend}
-                size="icon"
-                disabled={!input.trim() || isTyping}
-              >
-                <Send className="h-4 w-4" />
-              </Button>
-            </div>
           </div>
-        </CardContent>
-      )}
-    </Card>
+        )}
+      </div>
+    </div>
   );
 }

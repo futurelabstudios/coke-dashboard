@@ -298,28 +298,30 @@ export default function Overview() {
       />
 
       {filteredData.some((s) => s.coolerPurityPercent < 50) && (
-        <div className="rounded-xl border border-danger/20 bg-danger-muted p-5">
-          <div className="flex items-start gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-danger/20">
-              <AlertTriangle className="h-5 w-5 text-danger" />
+        <div className="glass-card glow-border-danger rounded-2xl p-5 sm:p-6 animate-fade-in">
+          <div className="flex items-start gap-4">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-danger/20 shrink-0">
+              <AlertTriangle className="h-6 w-6 text-danger" />
             </div>
-            <div>
-              <h3 className="font-semibold text-danger">Action Required: Low Purity Stores</h3>
-              <p className="mt-1 text-sm text-muted-foreground">
+            <div className="flex-1 min-w-0">
+              <h3 className="font-display font-bold text-danger text-base sm:text-lg">Action Required: Low Purity Stores</h3>
+              <p className="mt-1.5 text-sm text-muted-foreground">
                 {filteredData.filter((s) => s.coolerPurityPercent < 50).length} stores have 
                 cooler purity below 50%. Immediate attention needed to improve brand visibility.
               </p>
-              <ul className="mt-3 space-y-1">
+              <ul className="mt-4 space-y-2">
                 {filteredData
                   .filter((s) => s.coolerPurityPercent < 50)
                   .slice(0, 3)
                   .map((store) => (
                     <li 
                       key={store.id} 
-                      className="text-sm text-danger cursor-pointer hover:underline"
+                      className="flex items-center gap-2 text-sm text-danger cursor-pointer hover:bg-danger/10 px-3 py-2 rounded-lg transition-colors -mx-3"
                       onClick={() => handleStoreClick(store)}
                     >
-                      • {store.outletName} ({store.coolerPurityPercent.toFixed(1)}% purity)
+                      <span className="h-2 w-2 rounded-full bg-danger animate-pulse" />
+                      <span className="font-medium">{store.outletName}</span>
+                      <span className="text-danger/70">({store.coolerPurityPercent.toFixed(1)}% purity)</span>
                     </li>
                   ))}
               </ul>

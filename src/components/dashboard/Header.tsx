@@ -12,6 +12,7 @@ import {
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import { useState } from 'react';
+import { MobileNav } from './MobileNav';
 
 interface Notification {
   id: string;
@@ -80,26 +81,29 @@ export function Header({
   };
 
   return (
-    <header className={cn('flex h-16 items-center justify-between border-b bg-card px-6', className)}>
+    <header className={cn('flex h-14 sm:h-16 items-center justify-between border-b bg-card px-3 sm:px-6', className)}>
       {/* Left side */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2 sm:gap-4">
+        {/* Mobile menu */}
+        <MobileNav />
+        
         <div className="flex items-center gap-2">
-          <img src="/coca-cola-logo.png" alt="Coca-Cola India" className="h-8 w-8 rounded object-cover" />
+          <img src="/coca-cola-logo.png" alt="Coca-Cola India" className="h-7 w-7 sm:h-8 sm:w-8 rounded object-cover" />
           <div className="flex flex-col">
-            <h1 className="text-lg font-semibold text-foreground leading-tight">{title}</h1>
-            <span className="text-[10px] font-medium text-primary">COCA-COLA INDIA</span>
+            <h1 className="text-sm sm:text-lg font-semibold text-foreground leading-tight">{title}</h1>
+            <span className="text-[8px] sm:text-[10px] font-medium text-primary hidden xs:block">COCA-COLA INDIA</span>
           </div>
         </div>
-        <span className="flex items-center gap-1.5 rounded-full bg-success/10 px-2.5 py-1 text-xs font-medium text-success">
+        <span className="hidden sm:flex items-center gap-1.5 rounded-full bg-success/10 px-2.5 py-1 text-xs font-medium text-success">
           <span className="h-1.5 w-1.5 rounded-full bg-success animate-pulse" />
           Live
         </span>
       </div>
 
       {/* Right side */}
-      <div className="flex items-center gap-3">
-        {/* Search */}
-        <form onSubmit={handleSearch} className="relative hidden md:block">
+      <div className="flex items-center gap-1 sm:gap-3">
+        {/* Search - desktop only */}
+        <form onSubmit={handleSearch} className="relative hidden lg:block">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             placeholder="Search stores, regions..."
@@ -113,7 +117,7 @@ export function Header({
         <Button 
           variant="ghost" 
           size="icon" 
-          className="text-muted-foreground"
+          className="h-8 w-8 sm:h-9 sm:w-9 text-muted-foreground"
           onClick={onRefresh}
           disabled={isRefreshing}
         >
@@ -123,7 +127,7 @@ export function Header({
         {/* Notifications */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="relative text-muted-foreground">
+            <Button variant="ghost" size="icon" className="relative h-8 w-8 sm:h-9 sm:w-9 text-muted-foreground">
               <Bell className="h-4 w-4" />
               {unreadCount > 0 && (
                 <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-danger text-[10px] font-bold text-danger-foreground">
@@ -132,7 +136,7 @@ export function Header({
               )}
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-80">
+          <DropdownMenuContent align="end" className="w-72 sm:w-80">
             <div className="flex items-center justify-between px-2 py-1.5">
               <DropdownMenuLabel className="p-0">Notifications</DropdownMenuLabel>
               {unreadCount > 0 && (
@@ -157,7 +161,7 @@ export function Header({
                 onClick={() => handleNotificationClick(notification)}
               >
                 <div className="flex items-center gap-2 w-full">
-                  <span className="font-medium flex-1">{notification.title}</span>
+                  <span className="font-medium flex-1 text-sm">{notification.title}</span>
                   {!notification.read && (
                     <span className="h-2 w-2 rounded-full bg-primary" />
                   )}
@@ -172,9 +176,9 @@ export function Header({
         {/* User menu */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="text-muted-foreground">
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
-                <User className="h-4 w-4 text-primary" />
+            <Button variant="ghost" size="icon" className="h-8 w-8 sm:h-9 sm:w-9 text-muted-foreground">
+              <div className="flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full bg-primary/10">
+                <User className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary" />
               </div>
             </Button>
           </DropdownMenuTrigger>

@@ -127,18 +127,20 @@ export function AIChatbot() {
     return (
       <Button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 z-50 h-14 w-14 rounded-full shadow-lg hover:shadow-xl transition-shadow"
+        className="fixed bottom-4 right-4 z-50 h-12 w-12 sm:h-14 sm:w-14 sm:bottom-6 sm:right-6 rounded-full shadow-lg hover:shadow-xl transition-shadow"
         size="icon"
       >
-        <MessageCircle className="h-6 w-6" />
+        <MessageCircle className="h-5 w-5 sm:h-6 sm:w-6" />
       </Button>
     );
   }
 
   return (
     <Card className={cn(
-      'fixed bottom-6 right-6 z-50 w-96 shadow-2xl transition-all duration-200',
-      isMinimized ? 'h-14' : 'h-[500px]'
+      'fixed z-50 shadow-2xl transition-all duration-200',
+      'bottom-0 right-0 left-0 sm:left-auto sm:bottom-6 sm:right-6',
+      'w-full sm:w-96 rounded-none sm:rounded-xl',
+      isMinimized ? 'h-14' : 'h-[85vh] sm:h-[500px]'
     )}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 border-b p-3">
         <div className="flex items-center gap-2">

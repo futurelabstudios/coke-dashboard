@@ -243,30 +243,30 @@ export function AISummary({ currentPath, className }: AISummaryProps) {
 
   return (
     <Card className={cn('border-primary/20 bg-gradient-to-br from-primary/5 to-transparent', className)}>
-      <CardHeader className="pb-3">
-        <div className="flex items-center justify-between">
+      <CardHeader className="pb-2 sm:pb-3 px-3 sm:px-6 pt-3 sm:pt-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10">
-              <Info className="h-4 w-4 text-primary" />
+            <div className="flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-lg bg-primary/10">
+              <Info className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary" />
             </div>
-            <CardTitle className="text-base font-semibold">
+            <CardTitle className="text-sm sm:text-base font-semibold">
               Information Summary
             </CardTitle>
           </div>
-          <div className="flex items-center gap-1 rounded-lg bg-muted p-1">
+          <div className="flex items-center gap-1 rounded-lg bg-muted p-0.5 sm:p-1 self-start sm:self-auto">
             <Button
               variant={language === 'en' ? 'secondary' : 'ghost'}
               size="sm"
-              className="h-7 px-2 text-xs"
+              className="h-6 sm:h-7 px-2 text-[10px] sm:text-xs"
               onClick={() => setLanguage('en')}
             >
-              <Languages className="mr-1 h-3 w-3" />
+              <Languages className="mr-1 h-3 w-3 hidden sm:inline" />
               EN
             </Button>
             <Button
               variant={language === 'hinglish' ? 'secondary' : 'ghost'}
               size="sm"
-              className="h-7 px-2 text-xs"
+              className="h-6 sm:h-7 px-2 text-[10px] sm:text-xs"
               onClick={() => setLanguage('hinglish')}
             >
               Hinglish
@@ -274,7 +274,7 @@ export function AISummary({ currentPath, className }: AISummaryProps) {
             <Button
               variant={language === 'hi' ? 'secondary' : 'ghost'}
               size="sm"
-              className="h-7 px-2 text-xs"
+              className="h-6 sm:h-7 px-2 text-[10px] sm:text-xs"
               onClick={() => setLanguage('hi')}
             >
               हिंदी
@@ -282,21 +282,21 @@ export function AISummary({ currentPath, className }: AISummaryProps) {
           </div>
         </div>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-3 sm:space-y-4 px-3 sm:px-6 pb-3 sm:pb-6">
         <div>
-          <h4 className="font-medium text-foreground">{content.title}</h4>
-          <p className="mt-1 text-sm text-muted-foreground leading-relaxed">
+          <h4 className="font-medium text-foreground text-sm sm:text-base">{content.title}</h4>
+          <p className="mt-1 text-xs sm:text-sm text-muted-foreground leading-relaxed">
             {content.summary}
           </p>
         </div>
-        <div className="space-y-2">
-          <h5 className="text-sm font-medium text-foreground">
+        <div className="space-y-1.5 sm:space-y-2">
+          <h5 className="text-xs sm:text-sm font-medium text-foreground">
             {language === 'en' ? 'Key Insights:' : language === 'hinglish' ? 'Key Insights:' : 'मुख्य जानकारी:'}
           </h5>
-          <ul className="space-y-1.5">
+          <ul className="space-y-1 sm:space-y-1.5">
             {content.insights.map((insight, index) => (
-              <li key={index} className="flex items-start gap-2 text-sm text-muted-foreground">
-                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+              <li key={index} className="flex items-start gap-2 text-xs sm:text-sm text-muted-foreground">
+                <span className="mt-1.5 h-1 w-1 sm:h-1.5 sm:w-1.5 shrink-0 rounded-full bg-primary" />
                 {insight}
               </li>
             ))}

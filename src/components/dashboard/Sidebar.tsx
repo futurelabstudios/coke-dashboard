@@ -1,5 +1,7 @@
 import { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
+import { NavLink } from '@/components/NavLink';
 import { 
   LayoutDashboard, 
   Store, 
@@ -20,27 +22,28 @@ interface NavItem {
   id: string;
   label: string;
   icon: React.ElementType;
+  path: string;
   badge?: number;
 }
 
 const navItems: NavItem[] = [
-  { id: 'overview', label: 'Overview', icon: LayoutDashboard },
-  { id: 'stores', label: 'Store Information', icon: Store },
-  { id: 'regions', label: 'Regional Summary', icon: MapPin },
-  { id: 'coolers', label: 'Impure Coolers', icon: Thermometer, badge: 3 },
-  { id: 'missing', label: 'Missing Coolers', icon: AlertTriangle, badge: 12 },
-  { id: 'metrics', label: 'Usage Metrics', icon: BarChart3 },
-  { id: 'availability', label: 'Availability', icon: Package },
+  { id: 'overview', label: 'Overview', icon: LayoutDashboard, path: '/' },
+  { id: 'stores', label: 'Store Information', icon: Store, path: '/stores' },
+  { id: 'regions', label: 'Regional Summary', icon: MapPin, path: '/regions' },
+  { id: 'coolers', label: 'Impure Coolers', icon: Thermometer, path: '/coolers', badge: 3 },
+  { id: 'missing', label: 'Missing Coolers', icon: AlertTriangle, path: '/missing-coolers', badge: 12 },
+  { id: 'metrics', label: 'Usage Metrics', icon: BarChart3, path: '/metrics' },
+  { id: 'availability', label: 'Availability', icon: Package, path: '/availability' },
 ];
 
 interface SidebarProps {
-  activeItem: string;
-  onItemChange: (id: string) => void;
   className?: string;
 }
 
-export function Sidebar({ activeItem, onItemChange, className }: SidebarProps) {
+export function Sidebar({ className }: SidebarProps) {
   const [collapsed, setCollapsed] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const handleSettingsClick = () => {
     toast.info('Settings', {
@@ -69,7 +72,10 @@ export function Sidebar({ activeItem, onItemChange, className }: SidebarProps) {
       {/* Logo */}
       <div className="flex h-16 items-center justify-between border-b border-sidebar-border px-4">
         {!collapsed && (
-          <div className="flex items-center gap-2">
+          <div 
+            className="flex items-center gap-2 cursor-pointer"
+            onClick={() => navigate('/')}
+          >
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
               <span className="text-sm font-bold text-primary-foreground">R</span>
             </div>
@@ -83,10 +89,7 @@ export function Sidebar({ activeItem, onItemChange, className }: SidebarProps) {
           variant="ghost"
           size="icon"
           className="h-8 w-8 text-sidebar-foreground hover:bg-sidebar-accent"
-          onClick={() => {
-            setCollapsed(!collapsed);
-            toast.info(collapsed ? 'Sidebar expanded' : 'Sidebar collapsed');
-          }}
+          onClick={() => setCollapsed(!collapsed)}
         >
           {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
         </Button>
@@ -96,18 +99,18 @@ export function Sidebar({ activeItem, onItemChange, className }: SidebarProps) {
       <nav className="flex-1 space-y-1 p-2">
         {navItems.map((item) => {
           const Icon = item.icon;
-          const isActive = activeItem === item.id;
+          const isActive = location.pathname === item.path;
           
           return (
-            <button
+            <NavLink
               key={item.id}
-              onClick={() => onItemChange(item.id)}
+              to={item.path}
               className={cn(
                 'flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors',
-                isActive
-                  ? 'bg-sidebar-primary text-sidebar-primary-foreground'
-                  : 'text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
+                'text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
               )}
+              activeClassName="bg-sidebar-primary text-sidebar-primary-foreground hover:bg-sidebar-primary hover:text-sidebar-primary-foreground"
+              end={item.path === '/'}
             >
               <Icon className={cn('h-5 w-5 flex-shrink-0', collapsed && 'mx-auto')} />
               {!collapsed && (
@@ -125,7 +128,7 @@ export function Sidebar({ activeItem, onItemChange, className }: SidebarProps) {
                   )}
                 </>
               )}
-            </button>
+            </NavLink>
           );
         })}
       </nav>

@@ -14,19 +14,19 @@ interface KPICardProps {
 }
 
 const variantStyles = {
-  default: 'glass-card border-border/30',
-  primary: 'glass-card glow-border',
-  success: 'glass-card glow-border-success',
-  warning: 'glass-card glow-border-warning',
-  danger: 'glass-card glow-border-danger',
+  default: 'bg-card border border-border shadow-md hover:shadow-lg',
+  primary: 'bg-card border-2 border-primary/30 shadow-md hover:shadow-lg ring-1 ring-primary/10',
+  success: 'bg-card border-2 border-success/30 shadow-md hover:shadow-lg ring-1 ring-success/10',
+  warning: 'bg-card border-2 border-warning/30 shadow-md hover:shadow-lg ring-1 ring-warning/10',
+  danger: 'bg-card border-2 border-danger/30 shadow-md hover:shadow-lg ring-1 ring-danger/10',
 };
 
 const iconStyles = {
-  default: 'bg-muted/50 text-muted-foreground',
-  primary: 'bg-primary/20 text-primary',
-  success: 'bg-success/20 text-success',
-  warning: 'bg-warning/20 text-warning',
-  danger: 'bg-danger/20 text-danger',
+  default: 'bg-muted text-muted-foreground',
+  primary: 'bg-primary/15 text-primary',
+  success: 'bg-success/15 text-success',
+  warning: 'bg-warning/15 text-warning',
+  danger: 'bg-danger/15 text-danger',
 };
 
 const valueStyles = {
@@ -61,12 +61,12 @@ export function KPICard({
       )}
       onClick={onClick}
     >
-      {/* Decorative gradient orb */}
+      {/* Decorative gradient orb - subtle for light theme */}
       {variant === 'primary' && (
-        <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-primary/20 blur-2xl" />
+        <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-primary/10 blur-2xl" />
       )}
       {variant === 'success' && (
-        <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-success/20 blur-2xl" />
+        <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-success/10 blur-2xl" />
       )}
 
       <div className="relative z-10">
